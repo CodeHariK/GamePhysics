@@ -1,4 +1,14 @@
+# Physics
+
+* [Veritasium | Lagrange | The Closest We’ve Come to a Theory of Everything](https://www.youtube.com/watch?v=Q10_srZ-pbs)
+
+* [Lagrangian vs Newtonian Mechanics](https://www.youtube.com/watch?v=_Hp11d1Z-78)
+* [Classical Physics for Quantum Mechanics](https://www.youtube.com/playlist?list=PL_UV-wQj1lvX-6uNvdvOHOopu4WZ_dE5w)
+
 # Numerical Integration
+
+* [3Blue1Brown | Taylor series | Chapter 11, Essence of calculus](https://www.youtube.com/watch?v=3d6DsjIBzJ4&list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr&index=11)
+* [3Blue1Brown | Differential equations](https://www.youtube.com/playlist?list=PLZHQObOWTQDNPOjrT6KVlfJuKtYTftqH6)
 
 * https://www.gorillasun.de/blog/euler-and-verlet-integration-for-particle-physics/
 * [Why Runge-Kutta is SO Much Better Than Euler's Method #somepi](https://www.youtube.com/watch?v=dShtlMl69kY)

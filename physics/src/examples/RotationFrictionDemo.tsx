@@ -10,10 +10,8 @@ import { CanvasView } from '../components/CanvasView';
 export default function RotationFrictionDemo() {
   const [friction, setFriction] = createSignal(0.5);
   const [restitution, setRestitution] = createSignal(0.3);
-  let canvasInstance: Canvas | null = null;
 
   const onCanvasReady = (render: Canvas) => {
-    canvasInstance = render;
     const world = new World();
     const engine = new Engine(world);
     const colors = ['#00bcd4', '#e91e63', '#9c27b0', '#ff9800', '#4caf50', '#ffeb3b'];

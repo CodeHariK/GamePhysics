@@ -14,10 +14,6 @@
 * [Why Runge-Kutta is SO Much Better Than Euler's Method #somepi](https://www.youtube.com/watch?v=dShtlMl69kY)
 * [Verlet Integration](https://www.youtube.com/watch?v=-GWTDhOQU6M)
 
-## 
-
-* [Reducible | Building Collision Simulations: An Introduction to Computer Graphics](https://www.youtube.com/watch?v=eED4bSkYCB8)
-* [Reducible | A Strange But Elegant Approach to a Surprisingly Hard Problem (GJK Algorithm)](https://www.youtube.com/watch?v=ajv46BSqcK4)
 
 ## 2D Physics Engine
 
@@ -35,3 +31,21 @@
 
 * https://github.com/marichardson137/VerletIntegration
 * [Teaching myself C so I can build a particle simulation](https://www.youtube.com/watch?v=NorXFOobehY)
+
+## Collision Detection
+
+* https://box2d.org/files/ErinCatto_ContactManifolds_GDC2007.pdf
+
+* [Collision Detection with SAT (Math for Game Developers)](https://www.youtube.com/watch?v=-EsWKT7Doww)
+
+
+* [Reducible | Building Collision Simulations: An Introduction to Computer Graphics](https://www.youtube.com/watch?v=eED4bSkYCB8)
+
+* [Implementing GJK](https://www.youtube.com/watch?v=Qupqu1xe7Io)
+* [Reducible | A Strange But Elegant Approach to a Surprisingly Hard Problem (GJK Algorithm)](https://www.youtube.com/watch?v=ajv46BSqcK4)
+* [Two Different & Unknown GJK Algorithms, Visualized, Implemented, and Explained](https://www.youtube.com/watch?v=DGVZYdlw_uo)
+* [GJK Algorithm Explanation & Implementation](https://www.youtube.com/watch?v=MDusDn8oTSE)
+
+## 
+
+* https://github.com/Habrador/Computational-geometry

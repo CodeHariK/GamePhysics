@@ -1,15 +1,9 @@
-import { createSignal } from 'solid-js'
-import IntegrationDashboard from './examples/EnergyIntegrator'
-import PhaseSpaceDiagram from './examples/PhaseDiagram'
+import Blog from './Blog';
 
 function App() {
-
   return (
-    <>
-      <IntegrationDashboard />
-      <PhaseSpaceDiagram />
-    </>
-  )
+    <Blog />
+  );
 }
 
-export default App
+export default App;

@@ -61,7 +61,7 @@ export class Vector2 {
      * Faster than magnitude() because it avoids the Math.sqrt() call.
      * Highly useful for distance comparisons.
      */
-    public magSq(): number {
+    public lengthSq(): number {
         return this.x * this.x + this.y * this.y;
     }
 
@@ -69,7 +69,7 @@ export class Vector2 {
      * Calculates the magnitude (length) of the vector.
      */
     public mag(): number {
-        return Math.sqrt(this.magSq());
+        return Math.sqrt(this.lengthSq());
     }
 
     /**
@@ -113,11 +113,34 @@ export class Vector2 {
     }
 
     /**
+     * Calculates the distance between two vectors.
+     */
+    public static dist(a: Vector2, b: Vector2): number {
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    /**
      * Subtracts vector b from vector a and stores the result in 'out'.
      */
     public static sub(a: Vector2, b: Vector2, out: Vector2): Vector2 {
         out.x = a.x - b.x;
         out.y = a.y - b.y;
         return out;
+    }
+
+    /**
+     * Rotates this vector 90 degrees counter-clockwise (perpendicular) in place.
+     */
+    public perp(): this {
+        const x = this.x;
+        this.x = -this.y;
+        this.y = x;
+        return this;
+    }
+
+    public clone(): Vector2 {
+        return new Vector2(this.x, this.y);
     }
 }

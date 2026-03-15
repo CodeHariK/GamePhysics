@@ -1,3 +1,10 @@
+# Maths
+
+### Jacobian
+* [Change of Variables and the Jacobian](https://www.youtube.com/watch?v=hhFzJvaY__U)
+* [The Jacobian Matrix](https://www.youtube.com/watch?v=QexBVGVM690)
+* [Jacobian matrix](https://www.youtube.com/playlist?list=PLEZWS2fT1672lJI7FT5OXHJU6cTgkSzV2)
+
 # Physics
 
 * [Veritasium | Lagrange | The Closest We’ve Come to a Theory of Everything](https://www.youtube.com/watch?v=Q10_srZ-pbs)

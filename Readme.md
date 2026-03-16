@@ -1,3 +1,12 @@
+# Source
+
+* https://gamephysicsweekend.github.io/
+
+* https://box2d.org/publications/
+
+* Real-Time Collision Detection
+* Game Physics Engine Development
+
 # Maths
 
 ### Jacobian
@@ -13,6 +22,8 @@
 * [Classical Physics for Quantum Mechanics](https://www.youtube.com/playlist?list=PL_UV-wQj1lvX-6uNvdvOHOopu4WZ_dE5w)
 
 # Numerical Integration
+
+* [Erin Catto GDC | Physics for Game Programmers : Numerical Methods](https://gdcvault.com/play/1022196/Physics-for-Game-Programmers-Numerical)
 
 * [3Blue1Brown | Taylor series | Chapter 11, Essence of calculus](https://www.youtube.com/watch?v=3d6DsjIBzJ4&list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr&index=11)
 * [3Blue1Brown | Differential equations](https://www.youtube.com/playlist?list=PLZHQObOWTQDNPOjrT6KVlfJuKtYTftqH6)

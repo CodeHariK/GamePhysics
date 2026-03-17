@@ -24,7 +24,7 @@ export class Canvas {
 
     public get width(): number { return this.element.width; }
     public get height(): number { return this.element.height; }
-    
+
     public get zoom(): number { return this._zoom; }
     public set zoom(value: number) { this._zoom = value; }
 
@@ -88,7 +88,7 @@ export class Canvas {
             this.ctx.lineTo(points[i].x, points[i].y);
         }
         if (options?.fill) this.ctx.fill();
-        if (options?.stroke !== 'transparent') this.ctx.stroke();
+        if (options?.stroke && options.stroke !== 'transparent') this.ctx.stroke();
     }
 
     public rect(x: number, y: number, w: number, h: number, options?: DrawOptions): void {
@@ -96,7 +96,7 @@ export class Canvas {
         this.ctx.beginPath();
         this.ctx.rect(x, y, w, h);
         if (options?.fill) this.ctx.fill();
-        if (options?.stroke !== 'transparent') this.ctx.stroke();
+        if (options?.stroke && options.stroke !== 'transparent') this.ctx.stroke();
     }
 
     public circle(center: Vector2, radius: number, options?: DrawOptions): void {
@@ -104,7 +104,7 @@ export class Canvas {
         this.ctx.beginPath();
         this.ctx.arc(center.x, center.y, radius, 0, Math.PI * 2);
         if (options?.fill) this.ctx.fill();
-        if (options?.stroke !== 'transparent') this.ctx.stroke();
+        if (options?.stroke && options.stroke !== 'transparent') this.ctx.stroke();
     }
 
     public ellipse(center: Vector2, radiusX: number, radiusY: number, rotation: number = 0, options?: DrawOptions): void {
@@ -112,7 +112,7 @@ export class Canvas {
         this.ctx.beginPath();
         this.ctx.ellipse(center.x, center.y, radiusX, radiusY, rotation, 0, Math.PI * 2);
         if (options?.fill) this.ctx.fill();
-        if (options?.stroke !== 'transparent') this.ctx.stroke();
+        if (options?.stroke && options.stroke !== 'transparent') this.ctx.stroke();
     }
 
     public arc(center: Vector2, radius: number, startAngle: number, endAngle: number, anticlockwise: boolean = false, options?: DrawOptions): void {
@@ -120,7 +120,7 @@ export class Canvas {
         this.ctx.beginPath();
         this.ctx.arc(center.x, center.y, radius, startAngle, endAngle, anticlockwise);
         if (options?.fill) this.ctx.fill();
-        if (options?.stroke !== 'transparent') this.ctx.stroke();
+        if (options?.stroke && options.stroke !== 'transparent') this.ctx.stroke();
     }
 
     public triangle(p1: Vector2, p2: Vector2, p3: Vector2, options?: DrawOptions): void {
@@ -137,7 +137,7 @@ export class Canvas {
         }
         this.ctx.closePath();
         if (options?.fill) this.ctx.fill();
-        if (options?.stroke !== 'transparent') this.ctx.stroke();
+        if (options?.stroke && options.stroke !== 'transparent') this.ctx.stroke();
     }
 
     public text(str: string, p: Vector2, options?: DrawOptions & { font?: string, align?: CanvasTextAlign }): void {
@@ -145,7 +145,7 @@ export class Canvas {
         this.ctx.font = options?.font ?? '14px Arial';
         this.ctx.textAlign = options?.align ?? 'left';
         if (options?.fill) this.ctx.fillText(str, p.x, p.y);
-        if (options?.stroke !== 'transparent') this.ctx.strokeText(str, p.x, p.y);
+        if (options?.stroke && options.stroke !== 'transparent') this.ctx.strokeText(str, p.x, p.y);
     }
 
     public point(p: Vector2, radius: number = 3, options?: DrawOptions): void {
@@ -154,10 +154,10 @@ export class Canvas {
 
     public arrow(p1: Vector2, p2: Vector2, headSize: number = 10, options?: DrawOptions): void {
         this.line(p1, p2, options);
-        
+
         const dir = p2.clone().sub(p1).normalize();
         const perp = new Vector2(-dir.y, dir.x).mult(headSize * 0.6);
-        
+
         this.applyOptions(options);
         this.ctx.beginPath();
         this.ctx.moveTo(p2.x, p2.y);
@@ -169,7 +169,7 @@ export class Canvas {
 
     private _isPanning: number = -1; // -1: none, 1: middle click
     private _onInteraction?: () => void;
-    
+
     private handleMouseDownBound = this.handleMouseDown.bind(this);
     private handleMouseMoveBound = this.handleMouseMove.bind(this);
     private handleMouseUpBound = this.handleMouseUp.bind(this);
@@ -220,7 +220,7 @@ export class Canvas {
             const rect = this.element.getBoundingClientRect();
             const scaleX = this.element.width / rect.width;
             const scaleY = this.element.height / rect.height;
-            
+
             this._offset.x += (e.movementX * scaleX) / this._zoom;
             this._offset.y += (e.movementY * scaleY) / this._zoom;
             this._onInteraction?.();
@@ -253,7 +253,7 @@ export class Canvas {
         // Grid should fill the viewport even when zoomed and panned
         const scaledWidth = this.width / this._zoom;
         const scaledHeight = this.height / this._zoom;
-        
+
         const startX = Math.floor(-this._offset.x / spacing) * spacing;
         const startY = Math.floor(-this._offset.y / spacing) * spacing;
         const endX = startX + scaledWidth + spacing;

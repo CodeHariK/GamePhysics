@@ -38,7 +38,6 @@ export class World {
             
             // We use semi-implicit Euler inside the integrator
             Integrator.semiImplicitEuler(body, dt);
-            body.rotation += body.angularVelocity * dt;
             body.updateTransform();
         }
 

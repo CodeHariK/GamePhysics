@@ -7,16 +7,18 @@ import IntegratorIntro from './examples/Integrator/IntegratorBlog';
 import SATVisualization from './examples/SATDemo';
 import StressTestDemo from './examples/StressTestDemo';
 import RotationFrictionDemo from './examples/RotationFrictionDemo';
+import RotationalDynamicsBlog from './examples/RotationalDynamicsBlog';
 
 const TABS = [
+    { id: 'torque', label: 'Torque & Inertia' },
     { id: 'integrator', label: 'Integrators' },
     { id: 'collision', label: 'Collision & SAT' },
     { id: 'stress', label: 'Stress Test' },
-    { id: 'friction', label: 'Friction & Rotation' }
+    { id: 'friction', label: 'Friction & Rotation' },
 ];
 
 export default function Blog() {
-    const [activeTab, setActiveTab] = createSignal('integrator');
+    const [activeTab, setActiveTab] = createSignal('torque');
 
     return (
         <div class="blog-container">
@@ -38,6 +40,12 @@ export default function Blog() {
 
             <main class="content-section">
                 <Switch>
+
+                    {/* TAB 5: TORQUE & INERTIA */}
+                    <Match when={activeTab() === 'torque'}>
+                        <RotationalDynamicsBlog />
+                    </Match>
+
                     {/* TAB 1: INTEGRATORS (MERGED) */}
                     <Match when={activeTab() === 'integrator'}>
                         <IntegratorIntro />
@@ -100,6 +108,8 @@ export default function Blog() {
                             </div>
                         </div>
                     </Match>
+
+
                 </Switch>
             </main>
 

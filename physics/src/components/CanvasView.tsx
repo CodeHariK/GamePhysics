@@ -75,7 +75,7 @@ export const CanvasView: Component<CanvasViewProps> = (props) => {
                 padding: "5px 10px",
                 "border-radius": "4px",
                 "font-size": "11px",
-                color: "#888",
+                color: "#ccc",
                 "pointer-events": "none",
                 "font-family": " Rajdhani, sans-serif"
             }}>

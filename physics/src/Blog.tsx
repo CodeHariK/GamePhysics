@@ -8,9 +8,12 @@ import SATVisualization from './examples/SATDemo';
 import StressTestDemo from './examples/StressTestDemo';
 import RotationFrictionDemo from './examples/RotationFrictionDemo';
 import RotationalDynamicsBlog from './examples/RotationalDynamicsBlog';
+import EnergyDynamicsBlog from './examples/EnergyDynamicsBlog';
+
 
 const TABS = [
     { id: 'torque', label: 'Torque & Inertia' },
+    { id: 'energy', label: 'Energy & Lagrangian' },
     { id: 'integrator', label: 'Integrators' },
     { id: 'collision', label: 'Collision & SAT' },
     { id: 'stress', label: 'Stress Test' },
@@ -107,6 +110,11 @@ export default function Blog() {
                                 <RotationFrictionDemo />
                             </div>
                         </div>
+                    </Match>
+
+                    {/* TAB 6: ENERGY & LAGRANGIAN */}
+                    <Match when={activeTab() === 'energy'}>
+                        <EnergyDynamicsBlog />
                     </Match>
 
 

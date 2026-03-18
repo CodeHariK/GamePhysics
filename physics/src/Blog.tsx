@@ -8,7 +8,7 @@ import SATVisualization from './examples/SATDemo';
 import StressTestDemo from './examples/StressTestDemo';
 import RotationFrictionDemo from './examples/RotationFrictionDemo';
 import RotationalDynamicsBlog from './examples/RotationalDynamicsBlog';
-import EnergyDynamicsBlog from './examples/EnergyDynamicsBlog';
+import EnergyDynamicsBlog from './examples/Energy/EnergyDynamicsBlog';
 
 
 const TABS = [

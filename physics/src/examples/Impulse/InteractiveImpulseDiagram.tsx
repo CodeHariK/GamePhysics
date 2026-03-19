@@ -1,4 +1,4 @@
-import { createSignal, onMount, onCleanup, createEffect } from 'solid-js';
+import { createSignal, onCleanup } from 'solid-js';
 import { Vector2 } from '../../lib/math/Vector2';
 import { Canvas } from '../../lib/render/Canvas';
 import { CanvasView } from '../../components/CanvasView';
@@ -25,8 +25,8 @@ export default function InteractiveImpulseDiagram() {
     // Interaction State
     const [posA, setPosA] = createSignal(new Vector2(300, 150));
     const [posB, setPosB] = createSignal(new Vector2(480, 200));
-    const [angleA, setAngleA] = createSignal(Math.PI / 6);
-    const [angleB, setAngleB] = createSignal(0);
+    const [angleA] = createSignal(Math.PI / 6);
+    const [angleB] = createSignal(0);
     const [dragging, setDragging] = createSignal<null | 'A' | 'B'>(null);
 
     let canvasRef: Canvas | undefined;

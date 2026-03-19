@@ -9,6 +9,8 @@ import StressTestDemo from './examples/StressTestDemo';
 import RotationFrictionDemo from './examples/RotationFrictionDemo';
 import RotationalDynamicsBlog from './examples/RotationalDynamicsBlog';
 import EnergyDynamicsBlog from './examples/Energy/EnergyDynamicsBlog';
+import ImpulseDynamicsBlog from './examples/Impulse/ImpulseDynamicsBlog';
+import LagrangeMultiplier from './examples/Maths/LagrangianMultiplier/LagrangeMultiplier';
 
 
 const TABS = [
@@ -16,6 +18,8 @@ const TABS = [
     { id: 'energy', label: 'Energy & Lagrangian' },
     { id: 'integrator', label: 'Integrators' },
     { id: 'collision', label: 'Collision & SAT' },
+    { id: 'impulse', label: 'Impulse Resolution' },
+    { id: 'lagrange', label: 'Lagrange Multipliers' },
     { id: 'stress', label: 'Stress Test' },
     { id: 'friction', label: 'Friction & Rotation' },
 ];
@@ -76,6 +80,11 @@ export default function Blog() {
                         </div>
                     </Match>
 
+                    {/* TAB NEW: IMPULSE RESOLUTION */}
+                    <Match when={activeTab() === 'impulse'}>
+                        <ImpulseDynamicsBlog />
+                    </Match>
+
                     {/* TAB 3: STRESS TEST */}
                     <Match when={activeTab() === 'stress'}>
                         <div class="blog-card">
@@ -115,6 +124,11 @@ export default function Blog() {
                     {/* TAB 6: ENERGY & LAGRANGIAN */}
                     <Match when={activeTab() === 'energy'}>
                         <EnergyDynamicsBlog />
+                    </Match>
+
+                    {/* TAB NEW: LAGRANGE MULTIPLIERS */}
+                    <Match when={activeTab() === 'lagrange'}>
+                        <LagrangeMultiplier />
                     </Match>
 
 

@@ -4,7 +4,7 @@ import Math from './components/Math';
 
 // Import Demos
 import IntegratorIntro from './examples/Integrator/IntegratorBlog';
-import SATVisualization from './examples/SATDemo';
+import SATBlog from './examples/SAT/SATBlog';
 import StressTestDemo from './examples/StressTestDemo';
 import RotationFrictionDemo from './examples/RotationFrictionDemo';
 import RotationalDynamicsBlog from './examples/RotationalDynamicsBlog';
@@ -60,24 +60,7 @@ export default function Blog() {
 
                     {/* TAB 2: COLLISION & SAT */}
                     <Match when={activeTab() === 'collision'}>
-                        <div class="blog-card">
-                            <h2>05. Detection: SAT & Broadphase</h2>
-                            <p>
-                                Collision detection is a two-step process. First, the **Broadphase** filters out pairs that are too far apart to touch using a **Spatial Hash Grid**.
-                            </p>
-
-                            <p>
-                                Second, the **Narrowphase** uses the **Separating Axis Theorem (SAT)** to find the exact penetration depth and contact normal.
-                            </p>
-
-                            <div class="math-block">
-                                <Math block tex="\text{overlap} = \min(\text{projA.max} - \text{projB.min}, \text{projB.max} - \text{projA.min})" />
-                            </div>
-
-                            <div class="demo-container">
-                                <SATVisualization />
-                            </div>
-                        </div>
+                        <SATBlog />
                     </Match>
 
                     {/* TAB NEW: IMPULSE RESOLUTION */}

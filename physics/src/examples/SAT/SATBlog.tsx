@@ -1,6 +1,7 @@
 import Markdown from '../../components/Markdown';
 import SATContent from './SAT.md?raw';
 import ClippingContent from './Clipping.md?raw';
+import ComparisonContent from './SATComparison.md?raw';
 import SATLab from './SATLab';
 import ClippingLab from './ClippingLab';
 
@@ -41,6 +42,18 @@ export default function SATBlog() {
 
                 <div style="padding: 20px; background: rgba(0, 251, 255, 0.05); border-left: 4px solid #00fbff; border-radius: 4px; font-size: 14px; color: #aaa;">
                     <strong>Stability Note:</strong> Clipping creates a 1D contact segment. This allows the physics engine to apply vertical forces and frictional torque at multiple points, keeping the shapes from falling through each other during complex stacks.
+                </div>
+            </section>
+
+            {/* --- SECTION 3: COMPARISON --- */}
+            <section style="display: flex; flex-direction: column; gap: 30px;">
+                <div style="border-bottom: 1px solid rgba(230, 126, 34, 0.2); padding-bottom: 15px;">
+                    <h1 style="margin: 0; font-family: 'Orbitron', sans-serif; letter-spacing: 4px; background: linear-gradient(90deg, #e67e22, #f1c40f); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px;">03. COMPARISON & RECOMMENDATIONS</h1>
+                    <p style="color: #555; margin-top: 5px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">Stability & Robustness Analysis</p>
+                </div>
+
+                <div style="padding: 0 10px;">
+                    <Markdown content={ComparisonContent} />
                 </div>
             </section>
 

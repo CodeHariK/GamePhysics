@@ -11,13 +11,23 @@ export default function SATLab() {
     const [method, setMethod] = createSignal<'simple' | 'robust'>('simple');
     let canvasInstance: Canvas | null = null;
 
-    // Polygon State
+    // Polygon State (Hexagon A and Rotated Rect B)
     const [polyA, setPolyA] = createSignal<Vector2[]>([
-        new Vector2(250, 200), new Vector2(350, 200),
-        new Vector2(350, 300), new Vector2(250, 300)
+        ...Array.from({length: 6}, (_, i) => {
+            const a = i * 60 * (Math.PI / 180);
+            return new Vector2(250 + Math.cos(a) * 70, 225 + Math.sin(a) * 70);
+        })
     ]);
+
     const [polyB, setPolyB] = createSignal<Vector2[]>([
-        new Vector2(400, 250), new Vector2(500, 150), new Vector2(450, 350)
+        ...[
+            new Vector2(-60, -30), new Vector2(60, -30),
+            new Vector2(60, 30), new Vector2(-60, 30)
+        ].map(v => {
+            const a = Math.PI / 6;
+            const s = Math.sin(a), c = Math.cos(a);
+            return new Vector2(450 + (v.x * c - v.y * s), 225 + (v.x * s + v.y * c));
+        })
     ]);
 
     const onCanvasReady = (render: Canvas) => {

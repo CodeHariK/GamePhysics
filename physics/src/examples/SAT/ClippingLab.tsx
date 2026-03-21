@@ -8,11 +8,21 @@ export default function ClippingLab() {
     const [isColliding, setIsColliding] = createSignal(false);
     
     const [polyA, setPolyA] = createSignal<Vector2[]>([
-        new Vector2(200, 200), new Vector2(350, 200),
-        new Vector2(350, 350), new Vector2(200, 350)
+        ...Array.from({length: 6}, (_, i) => {
+            const a = i * 60 * (Math.PI / 180);
+            return new Vector2(280 + Math.cos(a) * 80, 200 + Math.sin(a) * 80);
+        })
     ]);
+
     const [polyB, setPolyB] = createSignal<Vector2[]>([
-        new Vector2(400, 280), new Vector2(500, 180), new Vector2(450, 380)
+        ...[
+            new Vector2(-70, -35), new Vector2(70, -35),
+            new Vector2(70, 35), new Vector2(-70, 35)
+        ].map(v => {
+            const a = -Math.PI / 4;
+            const s = Math.sin(a), c = Math.cos(a);
+            return new Vector2(480 + (v.x * c - v.y * s), 220 + (v.x * s + v.y * c));
+        })
     ]);
 
     const onCanvasReady = (render: Canvas) => {

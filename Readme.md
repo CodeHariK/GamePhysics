@@ -7,6 +7,10 @@
 * Real-Time Collision Detection
 * Game Physics Engine Development
 
+# Docs
+
+* https://box2d.org/files/ErinCatto_SequentialImpulses_GDC2006.pdf
+
 # Maths
 
 ### Jacobian
@@ -53,12 +57,19 @@
 ## Collision Detection
 
 * https://box2d.org/files/ErinCatto_ContactManifolds_GDC2007.pdf
+* https://dyn4j.org/2010/01/sat/
 
 * [Collision Detection with SAT (Math for Game Developers)](https://www.youtube.com/watch?v=-EsWKT7Doww)
 
 
 * [Reducible | Building Collision Simulations: An Introduction to Computer Graphics](https://www.youtube.com/watch?v=eED4bSkYCB8)
 
+### GJK
+
+* https://github.com/kroitor/gjk.c
+* https://cse442-17f.github.io/Gilbert-Johnson-Keerthi-Distance-Algorithm/
+
+* https://box2d.org/files/ErinCatto_GJK_GDC2010.pdf
 * [Implementing GJK](https://www.youtube.com/watch?v=Qupqu1xe7Io)
 * [Reducible | A Strange But Elegant Approach to a Surprisingly Hard Problem (GJK Algorithm)](https://www.youtube.com/watch?v=ajv46BSqcK4)
 * [Two Different & Unknown GJK Algorithms, Visualized, Implemented, and Explained](https://www.youtube.com/watch?v=DGVZYdlw_uo)

@@ -1,15 +1,13 @@
 # Source
 
-* https://gamephysicsweekend.github.io/
-
-* https://box2d.org/publications/
 
 * Real-Time Collision Detection
 * Game Physics Engine Development
 
-# Docs
+* https://gamephysicsweekend.github.io/
 
-* https://box2d.org/files/ErinCatto_SequentialImpulses_GDC2006.pdf
+
+* https://box2d.org/publications/
 
 # Maths
 
@@ -39,15 +37,22 @@
 
 ## 2D Physics Engine
 
-* [Argonaut | Simulating soft body animals](https://www.youtube.com/watch?v=GXh0Vxg7AnQ)
-
 * https://majikayogames.github.io/physics-tutorial/
 * [2D Physics Engine Tutorial Series](https://www.youtube.com/playlist?list=PLbuK0gG93AsENAa67XysaOr5K0cczxye_)
 * [Coding a Physics Engine from scratch!](https://www.youtube.com/watch?v=nXrEX6j-Mws)
 * [Let's Make a Physics Engine](https://www.youtube.com/playlist?list=PLSlpr6o9vURwq3oxVZSimY8iC-cdd3kIs)
-* [Coding a 2D Physics Engine](https://www.youtube.com/playlist?list=PLtrSb4XxIVbpZpV65kk73OoUcIrBzoSiO)
+* [GamesWithGabe | Coding a 2D Physics Engine](https://www.youtube.com/playlist?list=PLtrSb4XxIVbpZpV65kk73OoUcIrBzoSiO)
 
-* [Physics of JellyCar: Soft Body Physics Explained](https://www.youtube.com/watch?v=3OmkehAJoyo)
+
+* [Erin Catto | Physics for Game Programmers: Understanding Constraints](https://www.youtube.com/watch?v=SHinxAhv1ZE&list=PLVmb_qp6XRcwzN9l5mcia6Gh3HOgut3bH&index=18)
+* [Erin Catto | Physics for Game Programmers; Continuous Collision](https://www.youtube.com/watch?v=7_nKOET6zwI&list=PLVmb_qp6XRcwzN9l5mcia6Gh3HOgut3bH&index=9)
+* [GDC2013 | Physics for Game Programmers](https://gdcvault.com/play/1017643/Physics-for-Game)
+* [Physics for Game Programmers : Robust Contact Creation for Physics Simulation](https://gdcvault.com/play/1022193/Physics-for-Game-Programmers-Robust)
+
+* [Improving an Iterative Physics Solver Using a Direct Method](https://www.youtube.com/watch?v=P-WP1yMOkc4)(https://media.gdcvault.com/gdc04/slides/using_verlet_integration.pdf)
+* [Improving an Iterative Physics Solver Using a Direct Method](https://www.youtube.com/watch?v=P-WP1yMOkc4)
+
+* [Physics for Game Programmers: Exploring MLCP and Featherstone Solvers](https://gdcvault.com/play/1020604/Physics-for-Game-Programmers-Exploring)
 
 ## 3D Physics Engine
 
@@ -75,6 +80,20 @@
 * [Two Different & Unknown GJK Algorithms, Visualized, Implemented, and Explained](https://www.youtube.com/watch?v=DGVZYdlw_uo)
 * [GJK Algorithm Explanation & Implementation](https://www.youtube.com/watch?v=MDusDn8oTSE)
 
-## 
+## Soft Body Physics
+
+* [Physics of JellyCar: Soft Body Physics Explained](https://www.youtube.com/watch?v=3OmkehAJoyo)
+
+* [Argonaut | Simulating soft body animals](https://www.youtube.com/watch?v=GXh0Vxg7AnQ)
+
+## Particle Simulation
+
+* [Teaching myself C so I can build a particle simulation](https://www.youtube.com/watch?v=NorXFOobehY)
+
+## Computational Geometry
 
 * https://github.com/Habrador/Computational-geometry
+
+* [Physics for Game Programmers: QuickHull](https://gdcvault.com/play/1020606/Physics-for-Game-Programmers)
+
+## 

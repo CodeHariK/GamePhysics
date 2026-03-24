@@ -5,9 +5,11 @@ import { SAT } from '../collision/SAT';
 import { Resolver } from './Resolver';
 import { Vector2 } from '../math/Vector2';
 import { ContactPair } from './ContactPair';
+import type { IConstraint } from '../constraints/IConstraint';
 
 export class World {
     public bodies: Body[] = [];
+    public constraints: IConstraint[] = [];
     public spatialGrid: SpatialHashGrid;
     public pairs: Map<string, ContactPair> = new Map();
 
@@ -25,6 +27,17 @@ export class World {
         const index = this.bodies.indexOf(body);
         if (index !== -1) {
             this.bodies.splice(index, 1);
+        }
+    }
+
+    public addConstraint(constraint: IConstraint): void {
+        this.constraints.push(constraint);
+    }
+
+    public removeConstraint(constraint: IConstraint): void {
+        const index = this.constraints.indexOf(constraint);
+        if (index !== -1) {
+            this.constraints.splice(index, 1);
         }
     }
 
@@ -88,6 +101,12 @@ export class World {
         // 5. VELOCITY SOLVER (Sequential Impulses)
         const VELOCITY_ITERATIONS = 10;
         for (let i = 0; i < VELOCITY_ITERATIONS; i++) {
+            // Solve Constraints
+            for (const constraint of this.constraints) {
+                constraint.solveVelocity(dt);
+            }
+
+            // Solve Collisions
             for (const pair of activePairs) {
                 Resolver.resolveVelocities(pair);
             }
@@ -96,6 +115,12 @@ export class World {
         // 6. POSITION SOLVER (Pseudo-velocities / Nonlinear Projection)
         const POSITION_ITERATIONS = 3;
         for (let i = 0; i < POSITION_ITERATIONS; i++) {
+            // Solve Constraints
+            for (const constraint of this.constraints) {
+                constraint.solvePosition();
+            }
+
+            // Solve Collisions
             for (const pair of activePairs) {
                 // Re-run SAT to get fresh depths as bodies move apart
                 const manifold = SAT.testPolygons(pair.bodyA.vertices, pair.bodyB.vertices);
@@ -115,6 +140,7 @@ export class World {
 
     public clear(): void {
         this.bodies = [];
+        this.constraints = [];
         this.pairs.clear();
         this.spatialGrid.clear();
     }

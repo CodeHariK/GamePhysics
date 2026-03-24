@@ -82,6 +82,8 @@
 
 ## Soft Body Physics
 
+* https://www.gorillasun.de/blog/soft-body-physics-and-blobs/
+
 * [Physics of JellyCar: Soft Body Physics Explained](https://www.youtube.com/watch?v=3OmkehAJoyo)
 
 * [Argonaut | Simulating soft body animals](https://www.youtube.com/watch?v=GXh0Vxg7AnQ)

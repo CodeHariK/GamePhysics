@@ -21,7 +21,7 @@ body {
 }
 
 .blog-container {
-    max-width: 1100px;
+    max-width: 90%;
     margin: 40px auto;
     padding: 0 20px;
 }
@@ -51,23 +51,33 @@ body {
     margin-top: 10px;
 }
 
+.main-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
 .tabs-nav {
     display: flex;
-    justify-content: center;
-    gap: 10px;
+    flex-direction: column;
+    width: 280px;
+    min-width: 280px;
+    gap: 12px;
     margin-bottom: 30px;
     background: var(--card-bg);
-    padding: 10px;
+    padding: 20px;
     border-radius: 12px;
     border: 1px solid var(--border-color);
     backdrop-filter: var(--glass-blur);
     position: sticky;
-    top: 20px;
+    top: 40px;
     z-index: 100;
 }
 
 .tab-btn {
-    padding: 12px 24px;
+    width: 100%;
+    text-align: left;
+    padding: 14px 20px;
     background: transparent;
     border: none;
     color: var(--text-secondary);
@@ -94,12 +104,21 @@ body {
 }
 
 .content-section {
+    flex-grow: 1;
+    min-width: 0; /* Prevents flex items from overflowing */
     animation: slideIn 0.5s ease-out;
 }
 
 @keyframes slideIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .blog-card {
@@ -143,17 +162,29 @@ p {
     border: 1px solid #222;
 }
 
-.code-keyword { color: #c678dd; }
-.code-func { color: #61afef; }
-.code-comment { color: #5c6370; font-style: italic; }
-.code-var { color: #e06c75; }
+.code-keyword {
+    color: #c678dd;
+}
+
+.code-func {
+    color: #61afef;
+}
+
+.code-comment {
+    color: #5c6370;
+    font-style: italic;
+}
+
+.code-var {
+    color: #e06c75;
+}
 
 .demo-container {
     margin-top: 40px;
     border: 1px solid #333;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
 
 /* Theory Elements */
@@ -198,4 +229,25 @@ p {
 
 b {
     color: var(--accent-blue);
+}
+
+/* Responsive Layout */
+@media (max-width: 1024px) {
+    .main-layout {
+        flex-direction: column;
+    }
+
+    .tabs-nav {
+        width: 100%;
+        min-width: 0;
+        flex-direction: row;
+        overflow-x: auto;
+        position: sticky;
+        top: 20px;
+    }
+
+    .tab-btn {
+        width: auto;
+        white-space: nowrap;
+    }
 }

@@ -2,6 +2,8 @@ import { World } from './World';
 
 export class Engine {
     public world: World;
+    public hz: number = 120; // Physics frequency in Hz
+    public timeScale: number = 1.0;
     private lastTime: number = 0;
     private animationId: number | null = null;
     private running: boolean = false;
@@ -37,12 +39,15 @@ export class Engine {
         // Calculate delta time in seconds
         const dt = (currentTime - this.lastTime) / 1000;
         this.lastTime = currentTime;
+        
+        // Apply time scale to the progression of real time
+        const scaledDt = dt * this.timeScale;
 
-        // Fixed physics step (120Hz = 0.00833s)
-        const fixedDt = 1 / 120;
+        // Fixed physics step (user configurable, default 120Hz)
+        const fixedDt = 1 / this.hz;
         
         // Counter "Spiral of Death": clamp the dt to a reasonable max (e.g. 0.25s)
-        const frameTime = Math.min(dt, 0.25);
+        const frameTime = Math.min(scaledDt, 0.25);
         this.accumulator += frameTime;
 
         // Consume accumulator in fixed steps

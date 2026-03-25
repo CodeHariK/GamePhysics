@@ -11,7 +11,9 @@ import RotationalDynamicsBlog from './examples/RotationalDynamicsBlog';
 import EnergyDynamicsBlog from './examples/Energy/EnergyDynamicsBlog';
 import ImpulseDynamicsBlog from './examples/Impulse/ImpulseDynamicsBlog';
 import LagrangeMultiplier from './examples/Maths/LagrangianMultiplier/LagrangeMultiplier';
-import SkateboardDerivation from './examples/Skateboard/SkateboardDerivation';
+import SkateboardDerivation from './examples/Constraints/Skateboard/SkateboardDerivation';
+import RevoluteBlog from './examples/Constraints/Revolute/RevoluteBlog';
+import InequalityBlog from './examples/Constraints/Inequality/InequalityBlog';
 
 
 const TABS = [
@@ -24,10 +26,11 @@ const TABS = [
     { id: 'stress', label: 'Stress Test' },
     { id: 'friction', label: 'Friction & Rotation' },
     { id: 'constraints', label: 'Constraints' },
+    { id: 'inequality', label: 'Inequality' },
 ];
 
 export default function Blog() {
-    const [activeTab, setActiveTab] = createSignal('constraints');
+    const [activeTab, setActiveTab] = createSignal('inequality');
 
     return (
         <div class="blog-container">
@@ -120,8 +123,14 @@ export default function Blog() {
                         {/* TAB 0: CONSTRAINTS */}
                         <Match when={activeTab() === 'constraints'}>
                             <div class="blog-card">
+                                <RevoluteBlog />
+                                <hr />
                                 <SkateboardDerivation />
                             </div>
+                        </Match>
+
+                        <Match when={activeTab() === 'inequality'}>
+                            <InequalityBlog />
                         </Match>
 
                     </Switch>

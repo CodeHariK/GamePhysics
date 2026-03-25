@@ -4,7 +4,7 @@ import { Body } from '../lib/bodies/Body';
 import { World } from '../lib/dynamics/World';
 import { Engine } from '../lib/dynamics/Engine';
 import { Canvas } from '../lib/render/Canvas';
-import { SAT } from '../lib/collision/SAT';
+import { SAT } from '../lib/collision/LegacySAT';
 import { CanvasView } from '../components/CanvasView';
 
 export default function RotationFrictionDemo() {

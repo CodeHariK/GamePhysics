@@ -1,6 +1,6 @@
 import { createSignal, onCleanup } from 'solid-js';
 import { Vector2 } from '../../lib/math/Vector2';
-import { SimpleSAT, RobustSAT, SATUtils } from '../../lib/collision/SAT';
+import { SimpleSAT, RobustSAT, SATUtils } from '../../lib/collision/LegacySAT';
 import { Canvas } from '../../lib/render/Canvas';
 import { CanvasView } from '../../components/CanvasView';
 

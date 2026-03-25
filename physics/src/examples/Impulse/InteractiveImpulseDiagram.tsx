@@ -2,7 +2,7 @@ import { createSignal, onCleanup } from 'solid-js';
 import { Vector2 } from '../../lib/math/Vector2';
 import { Canvas } from '../../lib/render/Canvas';
 import { CanvasView } from '../../components/CanvasView';
-import { SAT } from '../../lib/collision/SAT';
+import { SAT } from '../../lib/collision/LegacySAT';
 
 export default function InteractiveImpulseDiagram() {
     // Physical Properties

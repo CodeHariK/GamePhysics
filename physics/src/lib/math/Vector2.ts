@@ -143,4 +143,32 @@ export class Vector2 {
     public clone(): Vector2 {
         return new Vector2(this.x, this.y);
     }
+
+    /**
+     * Cross product (scalar x vector), returns a new vector.
+     */
+    public crossSv(scalar: number): Vector2 {
+        return new Vector2(-this.y * scalar, this.x * scalar);
+    }
+
+    /**
+     * Rotates this vector 90 degrees clockwise, returns a new vector.
+     */
+    public rotate90CW(): Vector2 {
+        return new Vector2(this.y, -this.x);
+    }
+
+    /**
+     * Returns a new vector containing the element-wise minimum of this and another vector.
+     */
+    public min(other: Vector2): Vector2 {
+        return new Vector2(Math.min(this.x, other.x), Math.min(this.y, other.y));
+    }
+
+    /**
+     * Returns a new vector containing the element-wise maximum of this and another vector.
+     */
+    public max(other: Vector2): Vector2 {
+        return new Vector2(Math.max(this.x, other.x), Math.max(this.y, other.y));
+    }
 }

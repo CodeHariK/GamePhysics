@@ -1,7 +1,7 @@
 import SkateboardDemo from './SkateboardDemo';
-import Markdown from '../../components/Markdown';
+import Markdown from '../../../components/Markdown';
 import skateboardContent from './SkateboardConstraint.md?raw';
-import Math from '../../components/Math';
+import Math from '../../../components/Math';
 
 export default function SkateboardDerivation() {
     return (

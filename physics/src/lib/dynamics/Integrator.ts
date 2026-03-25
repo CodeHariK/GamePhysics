@@ -31,26 +31,49 @@ export class Integrator {
     }
 
     /**
-     * 2. Semi-Implicit (Symplectic) Euler
-     * Calculates velocity first, then uses NEW velocity for position.
-     * The Industry Standard for game physics. Perfectly stable energy.
+     * 2. Semi-Implicit (Symplectic) Euler - Velocity Phase
+     * Only updates velocities based on forces.
      */
-    public static semiImplicitEuler(body: Body, dt: number): void {
+    public static integrateVelocities(body: Body, dt: number): void {
         if (body.isStatic) return;
 
-        // Linear
         const accelX = body.force.x * body.invMass;
         const accelY = body.force.y * body.invMass;
+        const alpha = body.torque * body.invInertia;
 
         body.velocity.x += accelX * dt;
         body.velocity.y += accelY * dt;
+        body.angularVelocity += alpha * dt;
+
+        // Apply damping (v = v * (1 - dt * damping))
+        // High-quality damping should be independent of frame rate
+        const linDamping = Math.max(0, 1.0 - dt * body.linearDamping);
+        const angDamping = Math.max(0, 1.0 - dt * body.angularDamping);
+        
+        body.velocity.x *= linDamping;
+        body.velocity.y *= linDamping;
+        body.angularVelocity *= angDamping;
+    }
+
+    /**
+     * 2. Semi-Implicit (Symplectic) Euler - Position Phase
+     * Only updates positions based on CURRENT velocities.
+     */
+    public static integratePositions(body: Body, dt: number): void {
+        if (body.isStatic) return;
+
         body.position.x += body.velocity.x * dt;
         body.position.y += body.velocity.y * dt;
-
-        // Angular
-        const alpha = body.torque * body.invInertia;
-        body.angularVelocity += alpha * dt;
         body.rotation += body.angularVelocity * dt;
+        body.updateTransform();
+    }
+
+    /**
+     * Deprecated: Original single-step semi-implicit Euler.
+     */
+    public static semiImplicitEuler(body: Body, dt: number): void {
+        this.integrateVelocities(body, dt);
+        this.integratePositions(body, dt);
     }
 
     /**

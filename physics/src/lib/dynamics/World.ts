@@ -1,19 +1,27 @@
 import { Body } from '../bodies/Body';
-import { Integrator } from './Integrator';
-import { SpatialHashGrid } from '../collision/SpatialHashGrid';
-import { SAT } from '../collision/SAT';
-import { Resolver } from './Resolver';
 import { Vector2 } from '../math/Vector2';
-import { ContactPair } from './ContactPair';
-import type { IConstraint } from '../constraints/IConstraint';
+import { Constraint, type ConstraintSettings } from '../constraints/Constraint';
+import { ContactConstraint } from '../constraints/ContactConstraint';
+import { CollisionHelper } from '../collision/SAT';
+import { SpatialHashGrid } from '../collision/SpatialHashGrid';
 
 export class World {
     public bodies: Body[] = [];
-    public constraints: IConstraint[] = [];
+    public constraints: Constraint[] = [];
     public spatialGrid: SpatialHashGrid;
-    public pairs: Map<string, ContactPair> = new Map();
 
-    public gravity: Vector2 = new Vector2(0, 9.81 * 100); // Default Earth gravity in pixels
+    public gravity: Vector2 = new Vector2(0, 9.81 * 100);
+    public constraintIterations: number = 10;
+    
+    // Default physics settings resembling robust Box2D tuning for 60-120hz
+    public constraintSettings: ConstraintSettings = {
+        mode: 'soft',
+        baumgarteFactor: 0.1,
+        contactSoft: { hertz: 30.0, dampingRatio: 10.0 },
+        jointSoft: { hertz: 60.0, dampingRatio: 0.0 },
+        contactSpeed: 3.0,
+        warmStarting: true
+    };
 
     constructor(cellSize: number = 100) {
         this.spatialGrid = new SpatialHashGrid(cellSize);
@@ -30,118 +38,101 @@ export class World {
         }
     }
 
-    public addConstraint(constraint: IConstraint): void {
+    public addConstraint(constraint: Constraint): void {
         this.constraints.push(constraint);
     }
 
-    public removeConstraint(constraint: IConstraint): void {
+    public removeConstraint(constraint: Constraint): void {
         const index = this.constraints.indexOf(constraint);
         if (index !== -1) {
             this.constraints.splice(index, 1);
         }
     }
 
+    /**
+     * Executes a single fixed physics step. 
+     * The Engine handles the accumulator to call this at a strict dt.
+     */
     public step(dt: number): void {
-        // 1. INTEGRATE (Apply forces and move velocities)
-        for (const body of this.bodies) {
-            if (body.isStatic) continue;
-            
-            // Apply Gravity
-            body.addForce(new Vector2(this.gravity.x * body.mass, this.gravity.y * body.mass));
-            
-            // We use semi-implicit Euler inside the integrator
-            Integrator.semiImplicitEuler(body, dt);
-            body.updateTransform();
+        // 1. Integrate Forces (Gravity)
+        for (const obj of this.bodies) {
+            if (obj.isStatic) continue;
+            obj.velocity.add(this.gravity.clone().mult(dt));
+            // Add custom forces
+            obj.velocity.add(obj.force.mult(obj.invMass * dt));
         }
 
-        // 2. BROAD-PHASE
+        // 2. Collision Detection
+        this.detectCollisions();
+
+        // 3. Solve Constraints (Contacts, Joints, Motors)
+        this.solveConstraints(dt, this.constraintIterations);
+
+        // 4. Integrate Velocities -> Positions
+        for (const obj of this.bodies) {
+            if (!obj.isStatic) {
+                obj.step(dt);
+            }
+            // Always update transform (static objects might need it once, 
+            // but dynamic objects need it every step to sync world vertices/AABBs)
+            obj.updateTransform();
+            obj.clearForces(); 
+        }
+    }
+
+    private detectCollisions(): void {
+        // Keep Contacts from last frame to re-use their warm starting impulses
+        const contactConstraintsForReuse = this.constraints.filter(c => c instanceof ContactConstraint) as ContactConstraint[];
+        
+        // Remove old Contacts from active array (they will be replenished)
+        this.constraints = this.constraints.filter(c => !(c instanceof ContactConstraint));
+        
+        // Broad Phase
         this.spatialGrid.clear();
         for (const body of this.bodies) {
             this.spatialGrid.insert(body);
         }
         const possiblePairs = this.spatialGrid.getPotentialPairs();
 
-        // 3. NARROW-PHASE & PAIR PERSISTENCE
-        // Mark all existing pairs as inactive initially
-        for (const pair of this.pairs.values()) {
-            pair.isActive = false;
-        }
-
+        // Narrow Phase (generates new/updated ContactConstraints)
+        const newContacts: ContactConstraint[] = [];
         for (const [bodyA, bodyB] of possiblePairs) {
-            const manifold = SAT.testPolygons(bodyA.vertices, bodyB.vertices);
-            
-            if (manifold.isColliding) {
-                const pairId = ContactPair.getId(bodyA, bodyB);
-                let pair = this.pairs.get(pairId);
-                
-                if (!pair) {
-                    pair = new ContactPair(bodyA, bodyB);
-                    this.pairs.set(pairId, pair);
-                }
-                
-                pair.update(manifold);
+            const results = CollisionHelper.checkCollision(bodyA, bodyB, contactConstraintsForReuse);
+            for (const c of results) {
+                newContacts.push(c);
+            }
+        }
+        
+        // Add active contacts back to the constraint list
+        this.constraints.push(...newContacts);
+    }
+
+    private solveConstraints(dt: number, numIterations: number): void {
+        // Init properties
+        for (const constraint of this.constraints) {
+            if (constraint.update) {
+                constraint.update(this.constraintSettings);
             }
         }
 
-        // Remove inactive pairs (collisions that ended)
-        for (const [id, pair] of this.pairs.entries()) {
-            if (!pair.isActive) {
-                this.pairs.delete(id);
-            }
-        }
-
-        const activePairs = Array.from(this.pairs.values());
-
-        // 4. WARM STARTING
-        // Apply impulses from the previous frame to start the simulation closer to equilibrium
-        for (const pair of activePairs) {
-            Resolver.warmStart(pair);
-        }
-
-        // 5. VELOCITY SOLVER (Sequential Impulses)
-        const VELOCITY_ITERATIONS = 10;
-        for (let i = 0; i < VELOCITY_ITERATIONS; i++) {
-            // Solve Constraints
+        // Velocity Solver
+        for (let i = 0; i < numIterations; i++) {
             for (const constraint of this.constraints) {
-                constraint.solveVelocity(dt);
-            }
-
-            // Solve Collisions
-            for (const pair of activePairs) {
-                Resolver.resolveVelocities(pair);
+                constraint.solve(dt, this.constraintSettings);
             }
         }
 
-        // 6. POSITION SOLVER (Pseudo-velocities / Nonlinear Projection)
-        const POSITION_ITERATIONS = 3;
-        for (let i = 0; i < POSITION_ITERATIONS; i++) {
-            // Solve Constraints
-            for (const constraint of this.constraints) {
-                constraint.solvePosition();
+        // Restitution (Bounce) applied at end of step
+        for (const constraint of this.constraints) {
+            if (constraint instanceof ContactConstraint) {
+                constraint.applyRestitution();
             }
-
-            // Solve Collisions
-            for (const pair of activePairs) {
-                // Re-run SAT to get fresh depths as bodies move apart
-                const manifold = SAT.testPolygons(pair.bodyA.vertices, pair.bodyB.vertices);
-                if (manifold.isColliding) {
-                    Resolver.resolvePenetration(pair.bodyA, pair.bodyB, manifold);
-                    pair.bodyA.updateTransform();
-                    pair.bodyB.updateTransform();
-                }
-            }
-        }
-
-        // 7. CLEAR FORCES
-        for (const body of this.bodies) {
-            body.clearForces();
         }
     }
 
     public clear(): void {
         this.bodies = [];
         this.constraints = [];
-        this.pairs.clear();
         this.spatialGrid.clear();
     }
 }

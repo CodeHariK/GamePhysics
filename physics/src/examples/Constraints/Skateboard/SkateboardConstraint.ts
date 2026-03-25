@@ -1,8 +1,8 @@
-import { Vector2 } from '../../lib/math/Vector2';
-import { Body } from '../../lib/bodies/Body';
-import type { IConstraint } from '../../lib/constraints/IConstraint';
+import { Vector2 } from '../../../lib/math/Vector2';
+import { Body } from '../../../lib/bodies/Body';
+import { Constraint, type ConstraintSettings } from '../../../lib/constraints/Constraint';
 
-export class SkateboardConstraint implements IConstraint {
+export class SkateboardConstraint extends Constraint {
     public body: Body;
     public radius: number;
     public flatLength: number;
@@ -18,6 +18,7 @@ export class SkateboardConstraint implements IConstraint {
     private centerX: number;
 
     constructor(body: Body, radius: number, flatLength: number, baseY: number, centerX: number) {
+        super(body, body);
         this.body = body;
         this.radius = radius;
         this.flatLength = flatLength;
@@ -86,7 +87,9 @@ export class SkateboardConstraint implements IConstraint {
         return new Vector2(-n.y, n.x);
     }
 
-    public solveVelocity(dt: number): void {
+    public update(_settings: ConstraintSettings): void {}
+
+    public solve(dt: number, _settings: ConstraintSettings): void {
         const p = this.body.position;
         const v = this.body.velocity;
         const projection = this.getProjectedPoint(p);
@@ -114,25 +117,6 @@ export class SkateboardConstraint implements IConstraint {
         // Apply impulse
         this.body.velocity.x += lambda * normal.x * invMass;
         this.body.velocity.y += lambda * normal.y * invMass;
-    }
-
-    public solvePosition(): void {
-        const p = this.body.position;
-        const projection = this.getProjectedPoint(p);
-
-        if (projection.distance <= this.slop) return;
-
-        const invMass = this.body.invMass;
-        if (invMass === 0) return;
-
-        // Move the body towards the surface
-        const correctionX = projection.pos.x - p.x;
-        const correctionY = projection.pos.y - p.y;
-
-        // Position projection (Non-linear Gauss-Seidel) with beta
-        this.body.position.x += correctionX * this.beta;
-        this.body.position.y += correctionY * this.beta;
-        this.body.updateTransform();
     }
 
     public getLeftCenter(): Vector2 { return this.leftCenter; }

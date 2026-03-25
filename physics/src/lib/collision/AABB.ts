@@ -23,4 +23,16 @@ export class AABB {
             this.max.y >= other.min.y
         );
     }
+
+    /**
+     * Checks if a point is within this AABB.
+     */
+    public containsPoint(p: Vector2): boolean {
+        return (
+            p.x >= this.min.x &&
+            p.x <= this.max.x &&
+            p.y >= this.min.y &&
+            p.y <= this.max.y
+        );
+    }
 }

@@ -1,11 +1,11 @@
 import { createSignal, onCleanup } from 'solid-js';
-import { Vector2 } from '../../lib/math/Vector2';
-import { Body } from '../../lib/bodies/Body';
-import { World } from '../../lib/dynamics/World';
-import { Engine } from '../../lib/dynamics/Engine';
-import { Canvas } from '../../lib/render/Canvas';
+import { Vector2 } from '../../../lib/math/Vector2';
+import { Body } from '../../../lib/bodies/Body';
+import { World } from '../../../lib/dynamics/World';
+import { Engine } from '../../../lib/dynamics/Engine';
+import { Canvas } from '../../../lib/render/Canvas';
 import { SkateboardConstraint } from './SkateboardConstraint';
-import { CanvasView } from '../../components/CanvasView';
+import { CanvasView } from '../../../components/CanvasView';
 
 export default function SkateboardDemo() {
     const [followMouse, setFollowMouse] = createSignal(false);
@@ -13,14 +13,13 @@ export default function SkateboardDemo() {
 
     const onCanvasReady = (render: Canvas) => {
         const world = new World();
-        world.gravity.set(0, 1500); // Increased gravity for snappier motion
-        const engine = new Engine(world);
-
-        // --- Coordinate System & Constants ---
         const SCALE = 80;
         const centerX = 400;
         const centerY = 300;
+        world.gravity.set(0, 9.81 * SCALE); // Increased gravity for snappier motion
+        const engine = new Engine(world);
 
+        // --- Coordinate System & Constants ---
         const radius = 1.6;
         const flatLength = 3.5;
         const baseY = -1.25;

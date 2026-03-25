@@ -1,7 +1,8 @@
 import { Body } from '../bodies/Body';
+import { Shape } from '../collision/Shape';
 import { Vector2 } from '../math/Vector2';
 import { Contact } from './Contact';
-import type { CollisionManifold } from '../collision/SAT';
+import type { CollisionManifold } from '../collision/LegacySAT';
 
 /**
  * Manages the persistent collision state between two bodies.
@@ -9,6 +10,8 @@ import type { CollisionManifold } from '../collision/SAT';
 export class ContactPair {
     public bodyA: Body;
     public bodyB: Body;
+    public shapeA: Shape;
+    public shapeB: Shape;
     public id: string;
     
     public contacts: Contact[] = [];
@@ -17,10 +20,12 @@ export class ContactPair {
     
     public isActive: boolean = true;
 
-    constructor(bodyA: Body, bodyB: Body) {
+    constructor(bodyA: Body, bodyB: Body, shapeA: Shape, shapeB: Shape) {
         this.bodyA = bodyA;
         this.bodyB = bodyB;
-        this.id = ContactPair.getId(bodyA, bodyB);
+        this.shapeA = shapeA;
+        this.shapeB = shapeB;
+        this.id = ContactPair.getId(bodyA, bodyB, shapeA, shapeB);
         this.normal = new Vector2(0, 0);
         this.depth = 0;
     }
@@ -58,7 +63,9 @@ export class ContactPair {
         this.contacts = newContacts;
     }
 
-    public static getId(a: Body, b: Body): string {
-        return a.id < b.id ? `${a.id}_${b.id}` : `${b.id}_${a.id}`;
+    public static getId(a: Body, b: Body, sA: Shape, sB: Shape): string {
+        const bodyIds = a.id < b.id ? `${a.id}_${b.id}` : `${b.id}_${a.id}`;
+        const shapeIds = a.id < b.id ? `${sA.id}_${sB.id}` : `${sB.id}_${sA.id}`;
+        return `${bodyIds}_${shapeIds}`;
     }
 }

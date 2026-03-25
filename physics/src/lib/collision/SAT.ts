@@ -1,240 +1,297 @@
 import { Vector2 } from '../math/Vector2';
+import { Body } from '../bodies/Body';
+import { CircleShape, PolygonShape } from './Shape';
+import { ContactConstraint } from '../constraints/ContactConstraint';
+import { SLOP_LINEAR } from '../constraints/Constraint';
 
-/**
- * The Contact Manifold contains all the data needed to resolve a collision.
- */
-export interface CollisionManifold {
-    isColliding: boolean;
-    depth: number;       // How deep are they intersecting?
-    normal: Vector2;     // The direction to push Body A away from Body B
-    contacts: Vector2[]; // The specific points of contact
-    normalImpulses?: number[]; 
-    tangentImpulses?: number[];
-}
-
-/**
- * Standard SAT implementation with Point-in-Polygon contact detection.
- * This is the original, stable implementation used by the project demos.
- */
-export class SimpleSAT {
-
-    public static testPolygons(verticesA: Vector2[], verticesB: Vector2[]): CollisionManifold {
-        let normal = new Vector2(0, 0);
-        let depth = Infinity;
-
-        // We must test the edge normals of BOTH polygons
-        for (let i = 0; i < verticesA.length + verticesB.length; i++) {
-            let edgeStart: Vector2, edgeEnd: Vector2;
-
-            if (i < verticesA.length) {
-                edgeStart = verticesA[i];
-                edgeEnd = verticesA[(i + 1) % verticesA.length];
-            } else {
-                const bIndex = i - verticesA.length;
-                edgeStart = verticesB[bIndex];
-                edgeEnd = verticesB[(bIndex + 1) % verticesB.length];
-            }
-
-            const edge = Vector2.sub(edgeEnd, edgeStart, new Vector2());
-            const axis = new Vector2(-edge.y, edge.x).normalize();
-
-            const { min: minA, max: maxA } = SATUtils.projectVertices(verticesA, axis);
-            const { min: minB, max: maxB } = SATUtils.projectVertices(verticesB, axis);
-
-            if (minA >= maxB || minB >= maxA) {
-                return { isColliding: false, depth: 0, normal: new Vector2(0, 0), contacts: [] };
-            }
-
-            const axisDepth = Math.min(maxB - minA, maxA - minB);
-
-            if (axisDepth < depth) {
-                depth = axisDepth;
-                normal.copy(axis);
-            }
-        }
-
-        const centerA = SATUtils.getCenter(verticesA);
-        const centerB = SATUtils.getCenter(verticesB);
-        const dir = Vector2.sub(centerB, centerA, new Vector2());
-
-        if (dir.dot(normal) < 0) {
-            normal.mult(-1);
-        }
-
-        const contacts = this.findContactPoints(verticesA, verticesB);
-        return { isColliding: true, depth, normal, contacts };
+export class CollisionHelper {
+    public static shouldCollide(objA: Body, objB: Body): boolean {
+        if (objA.isStatic && objB.isStatic) return false;
+        if ((objA.collisionMask & objB.collisionMask) === 0) return false;
+        if ((objA.collisionMaskIgnore & objB.collisionMask) === objB.collisionMask) return false;
+        if ((objB.collisionMaskIgnore & objA.collisionMask) === objA.collisionMask) return false;
+        return true;
     }
 
-    private static findContactPoints(verticesA: Vector2[], verticesB: Vector2[]): Vector2[] {
-        const contacts: Vector2[] = [];
-        const checkPoints = (source: Vector2[], target: Vector2[]) => {
-            for (const v of source) {
-                if (SATUtils.isPointInPoly(v, target)) {
-                    contacts.push(v.clone());
-                }
-            }
-        };
-
-        checkPoints(verticesA, verticesB);
-        checkPoints(verticesB, verticesA);
-
-        if (contacts.length === 0) {
-            const centerA = SATUtils.getCenter(verticesA);
-            const centerB = SATUtils.getCenter(verticesB);
-            contacts.push(centerA.add(centerB).mult(0.5));
-        }
-
-        return contacts;
-    }
-}
-
-/**
- * Robust SAT implementation using Sutherland-Hodgman clipping.
- * Based on Box2D Lite logic for high-stability manifolds.
- */
-export class RobustSAT {
-    public static testPolygons(verticesA: Vector2[], verticesB: Vector2[]): CollisionManifold {
-        // Face of max separation search
-        const { separation: sepA, index: indexA } = this.findMaxSeparation(verticesA, verticesB);
-        if (sepA > 0) return { isColliding: false, depth: 0, normal: new Vector2(), contacts: [] };
-
-        const { separation: sepB, index: indexB } = this.findMaxSeparation(verticesB, verticesA);
-        if (sepB > 0) return { isColliding: false, depth: 0, normal: new Vector2(), contacts: [] };
-
-        let refPoly: Vector2[], incPoly: Vector2[], refIdx: number, flip = false;
-        if (sepA > sepB * 0.95 + sepA * 0.01) {
-            refPoly = verticesA; incPoly = verticesB; refIdx = indexA;
-        } else {
-            refPoly = verticesB; incPoly = verticesA; refIdx = indexB; flip = true;
-        }
-
-        const refNormal = SATUtils.getNormal(refPoly, refIdx);
-        const incIdx = this.findIncidentFace(incPoly, refNormal);
-        
-        const v1 = incPoly[incIdx];
-        const v2 = incPoly[(incIdx + 1) % incPoly.length];
-
-        const p1 = refPoly[refIdx];
-        const p2 = refPoly[(refIdx + 1) % refPoly.length];
-        const tangent = Vector2.sub(p2, p1, new Vector2()).normalize();
-        
-        const offset1 = tangent.dot(p1);
-        const offset2 = -tangent.dot(p2);
-
-        let clipped = SATUtils.clip(v1, v2, tangent, offset1);
-        if (clipped.length < 2) return SimpleSAT.testPolygons(verticesA, verticesB); // Fallback
-        clipped = SATUtils.clip(clipped[0], clipped[1], tangent.clone().mult(-1), offset2);
-        if (clipped.length < 2) return SimpleSAT.testPolygons(verticesA, verticesB); // Fallback
-        // Face clipping (keep only penetrating points)
-        const refNormalLocal = new Vector2(tangent.y, -tangent.x); // Changed to outward normal for CW winding
-        const refOffset = refNormalLocal.dot(p1);
-        const contacts: Vector2[] = [];
-        for (const p of clipped) {
-            const depth = refNormalLocal.dot(p) - refOffset; // Renamed 'd' to 'depth'
-            if (depth <= 0.1) contacts.push(p); // Small epsilon
-        }
-
-        if (contacts.length === 0) return SimpleSAT.testPolygons(verticesA, verticesB); // Fallback
-
-        const normal = flip ? refNormalLocal.clone().mult(-1) : refNormalLocal.clone();
-        const depth = Math.abs(Math.min(sepA, sepB));
-
-        return { isColliding: true, depth, normal, contacts };
-    }
-
-    private static findMaxSeparation(poly1: Vector2[], poly2: Vector2[]): { separation: number, index: number } {
-        let maxSep = -Infinity;
-        let bestIdx = 0;
-
-        for (let i = 0; i < poly1.length; i++) {
-            const n = SATUtils.getNormal(poly1, i);
-            const p1 = poly1[i];
-            
-            let minProj = Infinity;
-            for (const v2 of poly2) {
-                const proj = n.dot(Vector2.sub(v2, p1, new Vector2()));
-                if (proj < minProj) minProj = proj;
-            }
-
-            if (minProj > maxSep) {
-                maxSep = minProj;
-                bestIdx = i;
-            }
-        }
-        return { separation: maxSep, index: bestIdx };
-    }
-
-    private static findIncidentFace(poly: Vector2[], refNormal: Vector2): number {
-        let minDot = Infinity;
-        let bestIdx = 0;
-        for (let i = 0; i < poly.length; i++) {
-            const n = SATUtils.getNormal(poly, i);
-            const dot = n.dot(refNormal);
-            if (dot < minDot) {
-                minDot = dot;
-                bestIdx = i;
-            }
-        }
-        return bestIdx;
-    }
-}
-
-/**
- * Shared SAT Utilities
- */
-export class SATUtils {
-    public static projectVertices(vertices: Vector2[], axis: Vector2) {
+    public static projectVerts(verts: Vector2[], axis: Vector2): [number, number] {
         let min = Infinity, max = -Infinity;
-        for (const v of vertices) {
-            const p = v.dot(axis);
+        for (let i = 0; i < verts.length; i++) {
+            const p = verts[i].dot(axis);
             if (p < min) min = p;
             if (p > max) max = p;
         }
-        return { min, max };
+        return [min, max];
     }
 
-    public static getCenter(vertices: Vector2[]): Vector2 {
-        let x = 0, y = 0;
-        for (const v of vertices) { x += v.x; y += v.y; }
-        return new Vector2(x / vertices.length, y / vertices.length);
-    }
-
-    public static isPointInPoly(p: Vector2, poly: Vector2[]): boolean {
-        let inside = false;
-        for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
-            if (((poly[i].y > p.y) !== (poly[j].y > p.y)) && (p.x < (poly[j].x - poly[i].x) * (p.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)) inside = !inside;
+    public static clipLineSegmentToLine(p1: Vector2, p2: Vector2, normal: Vector2, offset: Vector2): Vector2[] {
+        let clippedPoints: Vector2[] = [];
+        const distance0 = Vector2.sub(p1, offset, new Vector2()).dot(normal);
+        const distance1 = Vector2.sub(p2, offset, new Vector2()).dot(normal);
+        
+        if (distance0 <= 0) clippedPoints.push(p1.clone());
+        if (distance1 <= 0) clippedPoints.push(p2.clone());
+        
+        if (Math.sign(distance0) !== Math.sign(distance1) && clippedPoints.length < 2) {
+            const pctAcross = distance1 / (distance1 - distance0);
+            const intersectionPt = p2.clone().add(Vector2.sub(p1, p2, new Vector2()).mult(pctAcross));
+            clippedPoints.push(intersectionPt);
         }
-        return inside;
+        return clippedPoints;
     }
 
-    public static getNormal(poly: Vector2[], index: number): Vector2 {
-        const p1 = poly[index];
-        const p2 = poly[(index + 1) % poly.length];
-        const edge = Vector2.sub(p2, p1, new Vector2());
-        // For CW winding (standard in canvas), (dy, -dx) is the OUTWARD normal.
-        return new Vector2(edge.y, -edge.x).normalize();
+    public static handleCollisions(objects: Body[], contactConstraintsForReuse: ContactConstraint[] = []): ContactConstraint[] {
+        const newContacts: ContactConstraint[] = [];
+
+        for (let i = 0; i < objects.length; i++) {
+            for (let j = i + 1; j < objects.length; j++) {
+                const bodyA = objects[i];
+                const bodyB = objects[j];
+                const results = CollisionHelper.checkCollision(bodyA, bodyB, contactConstraintsForReuse);
+                for (let k = 0; k < results.length; k++) {
+                    newContacts.push(results[k]);
+                }
+            }
+        }
+
+        return newContacts;
     }
 
-    public static clip(v1: Vector2, v2: Vector2, n: Vector2, offset: number): Vector2[] {
-        const out: Vector2[] = [];
-        const d1 = n.dot(v1) - offset, d2 = n.dot(v2) - offset;
-        if (d1 >= 0) out.push(v1);
-        if (d2 >= 0) out.push(v2);
-        if (d1 * d2 < 0) out.push(v1.clone().add(v2.clone().sub(v1).mult(d1 / (d1 - d2))));
-        return out;
-    }
-}
+    public static checkCollision(objA: Body, objB: Body, contactConstraintsForReuse: ContactConstraint[] = []): ContactConstraint[] {
+        if (!this.shouldCollide(objA, objB)) return [];
+        objA.updateAABB(); 
+        objB.updateAABB();
+        if (!objA.aabb.overlaps(objB.aabb)) return [];
 
-/**
- * Main SAT Interface. 
- * Defaults to SimpleSAT for project-wide stability.
- */
-export class SAT {
-    public static testPolygons(verticesA: Vector2[], verticesB: Vector2[]): CollisionManifold {
-        return SimpleSAT.testPolygons(verticesA, verticesB);
+        const contactConstraints: ContactConstraint[] = [];
+
+        for (let idxA = 0; idxA < objA.shapes.length; idxA++) {
+            const shapeA = objA.shapes[idxA];
+            for (let idxB = 0; idxB < objB.shapes.length; idxB++) {
+                const shapeB = objB.shapes[idxB];
+
+                let collision: any = {};
+
+                if (shapeA instanceof CircleShape && shapeB instanceof CircleShape) {
+                    collision = this.circleToCircleSAT(objA, shapeA, objB, shapeB);
+                } else if (shapeA instanceof CircleShape && shapeB instanceof PolygonShape) {
+                    collision = this.circleToPolySAT(objA, shapeA, objB, shapeB);
+                } else if (shapeA instanceof PolygonShape && shapeB instanceof CircleShape) {
+                    collision = this.circleToPolySAT(objB, shapeB, objA, shapeA);
+                } else {
+                    collision = this.polyToPolySAT(objA, shapeA as PolygonShape, objB, shapeB as PolygonShape);
+                }
+
+                if (!collision.normal) continue;
+                
+                if (collision.normal.dot(Vector2.sub(objB.position, objA.position, new Vector2())) < 0) {
+                    collision.normal.mult(-1);
+                }
+
+                let clippedResult: { points: Vector2[], featureIds: number[] } = { points: [], featureIds: [] };
+                
+                if (shapeA instanceof CircleShape && shapeB instanceof CircleShape) {
+                    clippedResult = this.clipCircleToCircle(objA, shapeA, objB, shapeB, collision);
+                } else if (shapeA instanceof CircleShape && shapeB instanceof PolygonShape) {
+                    clippedResult = this.clipCircleToPoly(objA, shapeA, objB, shapeB, collision);
+                } else if (shapeA instanceof PolygonShape && shapeB instanceof CircleShape) {
+                    clippedResult = this.clipCircleToPoly(objB, shapeB, objA, shapeA, collision);
+                } else {
+                    if (collision.referenceIsA) {
+                        clippedResult = this.clipPolyToPoly(objA, shapeA as PolygonShape, objB, shapeB as PolygonShape, collision);
+                    } else {
+                        clippedResult = this.clipPolyToPoly(objB, shapeB as PolygonShape, objA, shapeA as PolygonShape, collision);
+                    }
+                }
+
+                for (let ptIdx = 0; ptIdx < clippedResult.points.length; ptIdx++) {
+                    const wp = clippedResult.points[ptIdx];
+                    const featureId = clippedResult.featureIds[ptIdx];
+                    
+                    let reusedConstraint: ContactConstraint | null = null;
+                    for (let k = 0; k < contactConstraintsForReuse.length; k++) {
+                        const oldContact = contactConstraintsForReuse[k];
+                        if (oldContact.bodyA === objA && oldContact.bodyB === objB && oldContact.featureId === featureId) {
+                            reusedConstraint = oldContact;
+                            contactConstraintsForReuse.splice(k, 1);
+                            break;
+                        }
+                    }
+                    
+                    if (reusedConstraint) {
+                        reusedConstraint.isReused = true;
+                        reusedConstraint.setCollisionData(wp, collision.normal, collision.penetration);
+                        contactConstraints.push(reusedConstraint);
+                    } else {
+                        contactConstraints.push(new ContactConstraint(objA, objB, wp, collision.normal, collision.penetration, featureId));
+                    }
+                }
+            }
+        }
+
+        return contactConstraints;
     }
 
-    public static getCenter(vertices: Vector2[]): Vector2 { return SATUtils.getCenter(vertices); }
-    public static projectVertices(vertices: Vector2[], axis: Vector2) { return SATUtils.projectVertices(vertices, axis); }
-    public static isPointInPoly(p: Vector2, poly: Vector2[]): boolean { return SATUtils.isPointInPoly(p, poly); }
+    public static polyToPolySAT(objA: Body, shapeA: PolygonShape, objB: Body, shapeB: PolygonShape): any {
+        const vertsA = shapeA.localVertices.map(v => objA.localToWorld(v));
+        const vertsB = shapeB.localVertices.map(v => objB.localToWorld(v));
+        
+        const normalsA = this.getNormals(vertsA);
+        const normalsB = this.getNormals(vertsB);
+
+        let minSepA = -Infinity, minEdgeA = 0;
+        let minSepB = -Infinity, minEdgeB = 0;
+
+        for (let i = 0; i < normalsA.length; i++) {
+            const [minA, maxA] = this.projectVerts(vertsA, normalsA[i]);
+            const [minB, maxB] = this.projectVerts(vertsB, normalsA[i]);
+            if (minA > maxB || minB > maxA) return {};
+            const sep = minB - maxA;
+            if (sep > minSepA) { minSepA = sep; minEdgeA = i; }
+        }
+
+        for (let i = 0; i < normalsB.length; i++) {
+            const [minA, maxA] = this.projectVerts(vertsA, normalsB[i]);
+            const [minB, maxB] = this.projectVerts(vertsB, normalsB[i]);
+            if (minA > maxB || minB > maxA) return {};
+            const sep = minA - maxB;
+            if (sep > minSepB) { minSepB = sep; minEdgeB = i; }
+        }
+
+        let referenceIsA = true;
+        let referenceEdgeIndex = minEdgeA;
+        let normal = normalsA[referenceEdgeIndex];
+        const FACE_SWITCH_TOL = 1e-4;
+        
+        if (minSepB > minSepA + FACE_SWITCH_TOL) {
+            referenceIsA = false;
+            referenceEdgeIndex = minEdgeB;
+            normal = normalsB[referenceEdgeIndex];
+        }
+
+        return { normal: normal.clone(), penetration: referenceIsA ? -minSepA : -minSepB, referenceIsA, referenceEdgeIndex };
+    }
+
+    public static circleToPolySAT(objA: Body, shapeA: CircleShape, objB: Body, shapeB: PolygonShape): any {
+        const circlePos = objA.localToWorld(shapeA.offset);
+        const verts = shapeB.localVertices.map(v => objB.localToWorld(v));
+        let minPen = Infinity;
+        let normal: Vector2 | null = null;
+        const normals = this.getNormals(verts);
+
+        for (const n of normals) {
+            const [minA, maxA] = this.projectVerts(verts, n);
+            const minB = circlePos.dot(n) - shapeA.radius;
+            const maxB = circlePos.dot(n) + shapeA.radius;
+            
+            if (minA > maxB || minB > maxA) return {};
+
+            const pen = Math.min(maxA, maxB) - Math.max(minA, minB);
+            if (pen < minPen) {
+                minPen = pen;
+                normal = n;
+            }
+        }
+
+        let closestVert = verts[0];
+        let minDist = Math.sqrt(Vector2.sub(closestVert, circlePos, new Vector2()).lengthSq());
+        for (const v of verts) {
+            const d = Math.sqrt(Vector2.sub(v, circlePos, new Vector2()).lengthSq());
+            if (d < minDist) { closestVert = v; minDist = d; }
+        }
+        
+        const axisObj = Vector2.sub(closestVert, circlePos, new Vector2());
+        if (axisObj.lengthSq() === 0) return {};
+        const axis = axisObj.normalize();
+        
+        const [minA, maxA] = this.projectVerts(verts, axis);
+        const cProj = circlePos.dot(axis);
+        const minB = cProj - shapeA.radius;
+        const maxB = cProj + shapeA.radius;
+        
+        if (minA > maxB || minB > maxA) return {};
+
+        const pen = Math.min(maxA, maxB) - Math.max(minA, minB);
+        if (pen < minPen) {
+            minPen = pen;
+            normal = axis;
+        }
+
+        return { normal: normal!.clone(), penetration: minPen };
+    }
+
+    public static circleToCircleSAT(objA: Body, shapeA: CircleShape, objB: Body, shapeB: CircleShape): any {
+        const worldA = objA.localToWorld(shapeA.offset);
+        const worldB = objB.localToWorld(shapeB.offset);
+        const d = Vector2.sub(worldB, worldA, new Vector2());
+        const distSq = d.lengthSq();
+        const total = shapeA.radius + shapeB.radius;
+        
+        if (distSq > total * total || distSq === 0) return {};
+        
+        const dist = Math.sqrt(distSq);
+        return { normal: d.mult(1 / dist), penetration: total - dist };
+    }
+
+    public static clipPolyToPoly(refObj: Body, refShape: PolygonShape, incObj: Body, incShape: PolygonShape, collision: any): any {
+        const refVerts = refShape.localVertices.map(v => refObj.localToWorld(v));
+        const incVerts = incShape.localVertices.map(v => incObj.localToWorld(v));
+        const refNormals = this.getNormals(refVerts);
+        const incNormals = this.getNormals(incVerts);
+
+        const a1 = refVerts[collision.referenceEdgeIndex];
+        const a2 = refVerts[(collision.referenceEdgeIndex + 1) % refVerts.length];
+        const n = refNormals[collision.referenceEdgeIndex];
+
+        let lowestDot = Infinity;
+        let incidentIndex = 0;
+        for (let i = 0; i < incNormals.length; i++) {
+            const d = n.dot(incNormals[i]);
+            if (d < lowestDot) { lowestDot = d; incidentIndex = i; }
+        }
+        
+        let b2 = incVerts[incidentIndex];
+        let b1 = incVerts[(incidentIndex + 1) % incVerts.length];
+
+        const refTangent = Vector2.sub(a2, a1, new Vector2()).normalize();
+        let clippedPoints = this.clipLineSegmentToLine(b1, b2, refTangent.clone().mult(-1), a1);
+        if (clippedPoints.length === 0) return { points: [], featureIds: [] };
+        clippedPoints = this.clipLineSegmentToLine(clippedPoints[0], clippedPoints[1], refTangent, a2);
+
+        const finalPoints = clippedPoints.filter(v => n.dot(Vector2.sub(v, a1, new Vector2())) <= SLOP_LINEAR);
+        
+        const i11 = collision.referenceEdgeIndex;
+        const i12 = (i11 + 1) % refVerts.length;
+        const i21 = (incidentIndex + 1) % incVerts.length;
+        const i22 = incidentIndex;
+        
+        const prefix = ((refObj.id & 0xFF) << 24) | ((incObj.id & 0xFF) << 16) | ((refShape.id & 0xF) << 12) | ((incShape.id & 0xF) << 8);
+        
+        const featureIds = finalPoints.map((_, idx) => {
+            const vertexBits = idx === 0 ? ((i11 & 0xF) << 4) | (i22 & 0xF) : ((i12 & 0xF) << 4) | (i21 & 0xF);
+            return prefix | vertexBits;
+        });
+        
+        return { points: finalPoints, featureIds };
+    }
+
+    public static clipCircleToPoly(objA: Body, shapeA: CircleShape, objB: Body, shapeB: PolygonShape, collision: any): any {
+        const circleCenter = objA.localToWorld(shapeA.offset);
+        const dirToPoly = Vector2.sub(objB.position, circleCenter, new Vector2());
+        const sign = Math.sign(collision.normal.dot(dirToPoly)) || 1;
+        const point = circleCenter.clone().add(collision.normal.clone().mult(shapeA.radius * sign));
+        
+        const featureId = ((objA.id & 0xFF) << 24) | ((objB.id & 0xFF) << 16) | ((shapeA.id & 0xFF) << 8) | (shapeB.id & 0xFF);
+        return { points: [point], featureIds: [featureId] };
+    }
+
+    public static clipCircleToCircle(objA: Body, shapeA: CircleShape, objB: Body, shapeB: CircleShape, collision: any): any {
+        const worldCenterA = objA.localToWorld(shapeA.offset);
+        const point = worldCenterA.clone().add(collision.normal.clone().mult(shapeA.radius));
+        const featureId = ((objA.id & 0xFF) << 24) | ((objB.id & 0xFF) << 16) | ((shapeA.id & 0xFF) << 8) | (shapeB.id & 0xFF);
+        return { points: [point], featureIds: [featureId] };
+    }
+
+    public static getNormals(verts: Vector2[]): Vector2[] {
+        return verts.map((v, i) => Vector2.sub(verts[(i + 1) % verts.length], v, new Vector2()).rotate90CW().normalize());
+    }
 }

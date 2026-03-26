@@ -183,7 +183,7 @@ export default function RevoluteIterativeDemo() {
     });
 
     return (
-        <div style="background: #f8f9fa; border-radius: 12px; overflow: hidden; border: 1px solid #e0e0e0; font-family: 'Inter', sans-serif;">
+        <div style="background: #f8f9fa; border-radius: 12px; overflow: hidden; border: 1px solid #e0e0e0; font-family: 'Inter', monospace;">
             <div style="padding: 15px; background: #fff; border-bottom: 1px solid #eee; display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end;">
                 <div style="display: flex; flex-direction: column; gap: 4px;">
                     <label style="font-size: 11px; font-weight: 700; color: #666;">ITERATIONS: {iterations()}</label>

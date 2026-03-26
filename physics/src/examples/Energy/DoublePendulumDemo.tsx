@@ -89,7 +89,7 @@ export default function DoublePendulumDemo() {
         ctx.strokeStyle = '#444'; ctx.beginPath();
         ctx.moveTo(x + 30, y + 10); ctx.lineTo(x + 30, y + h - 20); ctx.lineTo(x + w - 10, y + h - 20);
         ctx.stroke();
-        ctx.fillStyle = '#fff'; ctx.font = '10px Rajdhani'; ctx.fillText(title, x + 35, y + 20);
+        ctx.fillStyle = '#fff'; ctx.font = '10px "JetBrains Mono", monospace'; ctx.fillText(title, x + 35, y + 20);
 
         keys.forEach((key, kidx) => {
             ctx.strokeStyle = colors[kidx]; ctx.lineWidth = 1.5;
@@ -107,7 +107,7 @@ export default function DoublePendulumDemo() {
     const drawPhase = (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, title: string, keyX: string, keyY: string, color: string) => {
         ctx.fillStyle = 'rgba(20, 20, 20, 0.8)'; ctx.fillRect(x, y, w, h);
         ctx.strokeStyle = '#444'; ctx.strokeRect(x, y, w, h);
-        ctx.fillStyle = color; ctx.font = '10px Rajdhani'; ctx.fillText(title, x + 5, y + 12);
+        ctx.fillStyle = color; ctx.font = '10px "JetBrains Mono", monospace'; ctx.fillText(title, x + 5, y + 12);
 
         ctx.strokeStyle = color; ctx.lineWidth = 1; ctx.globalAlpha = 0.5;
         ctx.beginPath();
@@ -179,7 +179,7 @@ export default function DoublePendulumDemo() {
         <div class="demo-container" style="background: #0a0a0a; padding: 25px; border-radius: 12px; border: 1px solid #333;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <div>
-                    <h3 style="margin: 0; color: #fff; font-family: Rajdhani;">Simulation: Chaotic Double Pendulum</h3>
+                    <h3 style="margin: 0; color: #fff; font-family: 'JetBrains Mono', monospace;">Simulation: Chaotic Double Pendulum</h3>
                     <p style="margin: 5px 0 0; font-size: 13px; color: #888;">Demonstrating complex coupling and energy conservation.</p>
                 </div>
                 <div style="display: flex; gap: 10px;">
@@ -188,13 +188,13 @@ export default function DoublePendulumDemo() {
                             state.th1 = Math.PI / 2; state.th2 = Math.PI / 2 + (Math.random() - 0.5);
                             state.w1 = 0; state.w2 = 0; state.history = [];
                         }}
-                        style="background: #333; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-family: Rajdhani;"
+                        style="background: #333; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-family: 'JetBrains Mono', monospace;"
                     >
                         randomize
                     </button>
                     <button
                         onClick={() => setIsRunning(!isRunning())}
-                        style="background: #555; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-family: Rajdhani;"
+                        style="background: #555; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-family: 'JetBrains Mono', monospace;"
                     >
                         {isRunning() ? 'PAUSE' : 'RESUME'}
                     </button>

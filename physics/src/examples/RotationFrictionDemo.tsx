@@ -151,8 +151,8 @@ export default function RotationFrictionDemo() {
   };
 
   return (
-    <div style="font-family: sans-serif; background: #111; color: white; padding: 20px; border-radius: 8px;">
-      <h2 style="margin: 0; font-family: 'Orbitron', sans-serif; letter-spacing: 2px; color: #3498db; margin-bottom: 20px;">PART 7: FRICTION & ROTATION</h2>
+    <div style="font-family: monospace; background: #111; color: white; padding: 20px; border-radius: 8px;">
+      <h2 style="margin: 0; font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; color: #3498db; margin-bottom: 20px;">PART 7: FRICTION & ROTATION</h2>
       <div style="margin-bottom: 20px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
         <label>
           Friction (µ): {friction()}

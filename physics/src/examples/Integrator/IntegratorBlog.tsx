@@ -83,7 +83,7 @@ export default function IntegratorIntro() {
             </div>
 
             <div class="separator-line" style="margin: 80px 0; border-top: 1px solid #222;"></div>
-            <h1 style="text-align: center; font-family: 'Orbitron'; font-size: 2rem; color: #444; margin-bottom: 40px;">LABS & EXPERIMENTS</h1>
+            <h1 style="text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 2rem; color: #444; margin-bottom: 40px;">LABS & EXPERIMENTS</h1>
 
             <div class="blog-card">
                 <h2>02. Linear Dynamics: mass-spring</h2>

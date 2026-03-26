@@ -27,7 +27,7 @@ export default function SkateboardDerivation() {
                 <SkateboardDemo />
             </div>
 
-            <div class="blog-card" style="margin-top: 40px; border-top: 1px solid rgba(52, 152, 219, 0.2); padding-top: 30px; background: #0a0a0a; color: #ccc; border-radius: 12px; padding: 40px; font-family: 'Rajdhani', sans-serif;">
+            <div class="blog-card" style="margin-top: 40px; border-top: 1px solid rgba(52, 152, 219, 0.2); padding-top: 30px; background: #0a0a0a; color: #ccc; border-radius: 12px; padding: 40px; font-family: 'JetBrains Mono', monospace;">
                 <Markdown content={skateboardContent} />
             </div>
 

@@ -72,7 +72,7 @@ export default function IntegratorLab() {
         };
 
         const drawLabel = (text: string, xp: number, yp: number) => {
-            render.text(text.toUpperCase(), new Vector2(xp, yp), { fill: '#666', font: 'bold 10px Rajdhani' });
+            render.text(text.toUpperCase(), new Vector2(xp, yp), { fill: '#666', font: 'bold 10px "JetBrains Mono", monospace' });
         };
 
         const drawVectorField = (cx: number, cy: number, w: number, h: number) => {
@@ -161,7 +161,7 @@ export default function IntegratorLab() {
     };
 
     return (
-        <div style="font-family: 'Rajdhani', sans-serif; background: #0a0a0a; color: white; padding: 20px; border-radius: 12px; border: 1px solid #222;">
+        <div style="font-family: 'JetBrains Mono', monospace; background: #0a0a0a; color: white; padding: 20px; border-radius: 12px; border: 1px solid #222;">
             <div style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: center;">
                 <label style="display: flex; align-items: center; gap: 10px;">
                     <span style="color: #61afef; font-weight: bold;">METHOD:</span>

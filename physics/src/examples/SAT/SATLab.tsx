@@ -92,13 +92,13 @@ export default function SATLab() {
                     for (const contact of result.contacts) {
                         render.circle(contact, 6, { fill: '#e74c3c', stroke: '#fff', lineWidth: 2 });
                     }
-                    render.text("POINT-IN-POLY MODE", new Vector2(cx, 80), { fill: '#e74c3c', font: 'bold 12px Orbitron', align: 'center' });
+                    render.text("POINT-IN-POLY MODE", new Vector2(cx, 80), { fill: '#e74c3c', font: 'bold 12px "JetBrains Mono", monospace', align: 'center' });
                 } else {
                     // Method 2: Robust Clipping (Cyan dots)
                     for (const contact of result.contacts) {
                         render.circle(contact, 6, { fill: '#00fbff', stroke: '#fff', lineWidth: 2 });
                     }
-                    render.text("ROBUST CLIPPING MODE", new Vector2(cx, 80), { fill: '#00fbff', font: 'bold 12px Orbitron', align: 'center' });
+                    render.text("ROBUST CLIPPING MODE", new Vector2(cx, 80), { fill: '#00fbff', font: 'bold 12px "JetBrains Mono", monospace', align: 'center' });
                     
                     // Show a glimpse of the MTV
                     const centerA = SATUtils.getCenter(currentPolyA);
@@ -142,10 +142,10 @@ export default function SATLab() {
         <div style="position: relative; border-radius: 8px; overflow: hidden; border: 1px solid #333; background: #0a0a0a;">
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(0,0,0,0.5); border-bottom: 1px solid #222; position: absolute; top: 0; left: 0; right: 0; z-index: 10; backdrop-filter: blur(5px);">
                 <div style="display: flex; gap: 20px; align-items: center;">
-                    <h2 style="margin: 0; font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 2px; color: #3498db;">01. SAT LAB</h2>
+                    <h2 style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 14px; letter-spacing: 2px; color: #3498db;">01. SAT LAB</h2>
                     <div style="display: flex; background: #111; padding: 2px; border-radius: 4px; border: 1px solid #222;">
-                        <button onClick={() => setMethod('simple')} style={`padding: 4px 10px; border-radius: 3px; border: none; cursor: pointer; font-size: 9px; font-family: 'Orbitron'; ${method() === 'simple' ? 'background: #e74c3c; color: white;' : 'background: transparent; color: #555;'}`}>SIMPLE</button>
-                        <button onClick={() => setMethod('robust')} style={`padding: 4px 10px; border-radius: 3px; border: none; cursor: pointer; font-size: 9px; font-family: 'Orbitron'; ${method() === 'robust' ? 'background: #00fbff; color: #000; font-weight: bold;' : 'background: transparent; color: #555;'}`}>ROBUST</button>
+                        <button onClick={() => setMethod('simple')} style={`padding: 4px 10px; border-radius: 3px; border: none; cursor: pointer; font-size: 9px; font-family: 'JetBrains Mono', monospace; ${method() === 'simple' ? 'background: #e74c3c; color: white;' : 'background: transparent; color: #555;'}`}>SIMPLE</button>
+                        <button onClick={() => setMethod('robust')} style={`padding: 4px 10px; border-radius: 3px; border: none; cursor: pointer; font-size: 9px; font-family: 'JetBrains Mono', monospace; ${method() === 'robust' ? 'background: #00fbff; color: #000; font-weight: bold;' : 'background: transparent; color: #555;'}`}>ROBUST</button>
                     </div>
                 </div>
                 <div style={`font-weight: bold; padding: 4px 12px; border-radius: 4px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; ${isColliding() ? 'background: rgba(231, 76, 60, 0.2); border: 1px solid #e74c3c; color: #e74c3c;' : 'background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; color: #2ecc71;'}`}>
@@ -156,7 +156,7 @@ export default function SATLab() {
             <CanvasView width={800} height={450} onReady={onCanvasReady} class="sat-canvas" style={{ width: "100%", height: "auto" }} />
 
             <div style="position: absolute; bottom: 20px; left: 20px; right: 20px; display: flex; gap: 10px; align-items: center; background: rgba(0,0,0,0.8); padding: 10px 15px; border-radius: 6px; border: 1px solid #222;">
-                <button onClick={() => setSelectedAxisIndex(prev => prev + 1)} style="padding: 6px 12px; background: #333; color: #fff; border: 1px solid #444; border-radius: 4px; cursor: pointer; font-size: 10px; font-family: 'Orbitron';">Next Axis</button>
+                <button onClick={() => setSelectedAxisIndex(prev => prev + 1)} style="padding: 6px 12px; background: #333; color: #fff; border: 1px solid #444; border-radius: 4px; cursor: pointer; font-size: 10px; font-family: 'JetBrains Mono', monospace;">Next Axis</button>
                 <button onClick={() => {
                     if (!canvasInstance) return;
                     const rect = canvasInstance.element.getBoundingClientRect();
@@ -172,8 +172,8 @@ export default function SATLab() {
                         vertices.push(new Vector2(cx + Math.cos(a) * r, cy + Math.sin(a) * r));
                     }
                     setPolyB(vertices);
-                }} style="padding: 6px 12px; background: #333; color: #fff; border: 1px solid #444; border-radius: 4px; cursor: pointer; font-size: 10px; font-family: 'Orbitron';">Shuffle B</button>
-                <div style="flex: 1; text-align: right; font-size: 10px; color: #555; font-family: 'Orbitron';">
+                }} style="padding: 6px 12px; background: #333; color: #fff; border: 1px solid #444; border-radius: 4px; cursor: pointer; font-size: 10px; font-family: 'JetBrains Mono', monospace;">Shuffle B</button>
+                <div style="flex: 1; text-align: right; font-size: 10px; color: #555; font-family: 'JetBrains Mono', monospace;">
                     METHOD: <span style={`color: ${method() === 'simple' ? '#e74c3c' : '#00fbff'}`}>{method().toUpperCase()}</span>
                 </div>
             </div>

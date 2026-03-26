@@ -159,7 +159,7 @@ export default function RevoluteMinimalDemo() {
     };
 
     return (
-        <div style="background: #fff; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; font-family: sans-serif;">
+        <div style="background: #fff; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; font-family: monospace;">
             <div style="padding: 15px; border-bottom: 1px solid #eee; display: flex; gap: 20px; align-items: center; justify-content: center; background: #fafafa;">
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <span style="font-size: 14px; color: #666;">Links:</span>

@@ -107,6 +107,25 @@ export class Canvas {
         if (options?.stroke && options.stroke !== 'transparent') this.ctx.stroke();
     }
 
+    public capsule(p1: Vector2, p2: Vector2, radius: number, options?: DrawOptions): void {
+        this.applyOptions(options);
+        const dx = p2.x - p1.x;
+        const dy = p2.y - p1.y;
+        const angle = Math.atan2(dy, dx);
+        
+        this.ctx.beginPath();
+        // Start with arc at p1
+        this.ctx.arc(p1.x, p1.y, radius, angle + Math.PI / 2, angle - Math.PI / 2);
+        // Line to side of p2
+        // arc will automatically add a line from previous point
+        // End with arc at p2
+        this.ctx.arc(p2.x, p2.y, radius, angle - Math.PI / 2, angle + Math.PI / 2);
+        this.ctx.closePath();
+        
+        if (options?.fill) this.ctx.fill();
+        if (options?.stroke && options.stroke !== 'transparent') this.ctx.stroke();
+    }
+
     public ellipse(center: Vector2, radiusX: number, radiusY: number, rotation: number = 0, options?: DrawOptions): void {
         this.applyOptions(options);
         this.ctx.beginPath();

@@ -90,7 +90,7 @@ export default function ClippingLab() {
                 
                 // Show Reference Face
                 render.line(p1, p2, { stroke: '#2ecc71', lineWidth: 6 }); 
-                render.text("REFERENCE FACE", p1.clone().add(p2).mult(0.5).add(refNormal.clone().mult(-25)), { fill: '#2ecc71', font: 'bold 10px Orbitron', align: 'center' });
+                render.text("REFERENCE FACE", p1.clone().add(p2).mult(0.5).add(refNormal.clone().mult(-25)), { fill: '#2ecc71', font: 'bold 10px "JetBrains Mono", monospace', align: 'center' });
 
                 // Draw Contacts from result
                 for (const contact of result.contacts) {
@@ -132,7 +132,7 @@ export default function ClippingLab() {
     return (
         <div style="position: relative; border-radius: 8px; overflow: hidden; border: 1px solid #333; background: #0a0a0a;">
             <div style="position: absolute; top: 15px; left: 20px; z-index: 10; display: flex; align-items: center; gap: 15px;">
-                <h3 style="margin: 0; font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 2px; color: #00fbff;">CLIPPING DEEP-DIVE</h3>
+                <h3 style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 14px; letter-spacing: 2px; color: #00fbff;">CLIPPING DEEP-DIVE</h3>
                 <div style={`font-size: 10px; font-weight: bold; padding: 2px 8px; border-radius: 4px; border: 1px solid ${isColliding() ? '#e74c3c' : '#2ecc71'}; color: ${isColliding() ? '#e74c3c' : '#2ecc71'};`}>
                     {isColliding() ? 'PENETRATING' : 'CLEAR'}
                 </div>
@@ -140,7 +140,7 @@ export default function ClippingLab() {
 
             <CanvasView width={800} height={400} onReady={onCanvasReady} style={{ width: "100%", height: "auto" }} />
             
-            <div style="position: absolute; bottom: 15px; left: 20px; color: #555; font-size: 10px; display: flex; gap: 20px; font-family: 'Orbitron'; letter-spacing: 1px;">
+            <div style="position: absolute; bottom: 15px; left: 20px; color: #555; font-size: 10px; display: flex; gap: 20px; font-family: 'JetBrains Mono', monospace; letter-spacing: 1px;">
                 <span><span style="color: #2ecc71; font-weight: bold;">■</span> REF FACE</span>
                 <span><span style="color: #00fbff; font-weight: bold;">■</span> INC FACE</span>
                 <span><span style="color: #fff; font-weight: bold;">○</span> CONTACT</span>

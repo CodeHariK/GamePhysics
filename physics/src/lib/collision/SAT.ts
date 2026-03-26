@@ -1,6 +1,6 @@
 import { Vector2 } from '../math/Vector2';
 import { Body } from '../bodies/Body';
-import { CircleShape, PolygonShape } from './Shape';
+import { CircleShape, PolygonShape, CapsuleShape } from './Shape';
 import { ContactConstraint } from '../constraints/ContactConstraint';
 import { SLOP_LINEAR } from '../constraints/Constraint';
 
@@ -70,6 +70,7 @@ export class CollisionHelper {
                 const shapeB = objB.shapes[idxB];
 
                 let collision: any = {};
+                let clippedResult: { points: Vector2[], featureIds: number[] } = { points: [], featureIds: [] };
 
                 if (shapeA instanceof CircleShape && shapeB instanceof CircleShape) {
                     collision = this.circleToCircleSAT(objA, shapeA, objB, shapeB);
@@ -77,6 +78,12 @@ export class CollisionHelper {
                     collision = this.circleToPolySAT(objA, shapeA, objB, shapeB);
                 } else if (shapeA instanceof PolygonShape && shapeB instanceof CircleShape) {
                     collision = this.circleToPolySAT(objB, shapeB, objA, shapeA);
+                    if (collision.normal) collision.normal.mult(-1);
+                } else if (shapeA instanceof CircleShape && shapeB instanceof CapsuleShape) {
+                    collision = this.capsuleToCircleSAT(objB, shapeB, objA, shapeA);
+                    if (collision.normal) collision.normal.mult(-1);
+                } else if (shapeA instanceof CapsuleShape && shapeB instanceof CircleShape) {
+                    collision = this.capsuleToCircleSAT(objA, shapeA, objB, shapeB);
                 } else {
                     collision = this.polyToPolySAT(objA, shapeA as PolygonShape, objB, shapeB as PolygonShape);
                 }
@@ -87,14 +94,16 @@ export class CollisionHelper {
                     collision.normal.mult(-1);
                 }
 
-                let clippedResult: { points: Vector2[], featureIds: number[] } = { points: [], featureIds: [] };
-                
                 if (shapeA instanceof CircleShape && shapeB instanceof CircleShape) {
                     clippedResult = this.clipCircleToCircle(objA, shapeA, objB, shapeB, collision);
                 } else if (shapeA instanceof CircleShape && shapeB instanceof PolygonShape) {
                     clippedResult = this.clipCircleToPoly(objA, shapeA, objB, shapeB, collision);
                 } else if (shapeA instanceof PolygonShape && shapeB instanceof CircleShape) {
                     clippedResult = this.clipCircleToPoly(objB, shapeB, objA, shapeA, collision);
+                } else if (shapeA instanceof CircleShape && shapeB instanceof CapsuleShape) {
+                    clippedResult = this.clipCapsuleToCircle(objB, shapeB, objA, shapeA, collision);
+                } else if (shapeA instanceof CapsuleShape && shapeB instanceof CircleShape) {
+                    clippedResult = this.clipCapsuleToCircle(objA, shapeA, objB, shapeB, collision);
                 } else {
                     if (collision.referenceIsA) {
                         clippedResult = this.clipPolyToPoly(objA, shapeA as PolygonShape, objB, shapeB as PolygonShape, collision);
@@ -287,6 +296,46 @@ export class CollisionHelper {
     public static clipCircleToCircle(objA: Body, shapeA: CircleShape, objB: Body, shapeB: CircleShape, collision: any): any {
         const worldCenterA = objA.localToWorld(shapeA.offset);
         const point = worldCenterA.clone().add(collision.normal.clone().mult(shapeA.radius));
+        const featureId = ((objA.id & 0xFF) << 24) | ((objB.id & 0xFF) << 16) | ((shapeA.id & 0xFF) << 8) | (shapeB.id & 0xFF);
+        return { points: [point], featureIds: [featureId] };
+    }
+
+    public static capsuleToCircleSAT(objA: Body, shapeA: CapsuleShape, objB: Body, shapeB: CircleShape): any {
+        const wp1 = objA.localToWorld(shapeA.p1);
+        const wp2 = objA.localToWorld(shapeA.p2);
+        const circlePos = objB.localToWorld(shapeB.offset);
+
+        // Closest point on segment
+        const ab = Vector2.sub(wp2, wp1, new Vector2());
+        let t = ab.dot(ab);
+        let closest: Vector2;
+        if (t === 0) {
+            closest = wp1.clone();
+        } else {
+            const ap = Vector2.sub(circlePos, wp1, new Vector2());
+            t = Math.max(0, Math.min(1, ap.dot(ab) / t));
+            closest = wp1.clone().add(ab.mult(t));
+        }
+
+        const d = Vector2.sub(circlePos, closest, new Vector2());
+        const distSq = d.lengthSq();
+        const totalRadius = shapeA.radius + shapeB.radius;
+
+        if (distSq > totalRadius * totalRadius) return {};
+
+        if (distSq === 0) {
+            return { normal: new Vector2(0, 1), penetration: totalRadius };
+        }
+
+        const dist = Math.sqrt(distSq);
+        return { normal: d.mult(1 / dist), penetration: totalRadius - dist };
+    }
+
+    public static clipCapsuleToCircle(objA: Body, shapeA: CapsuleShape, objB: Body, shapeB: CircleShape, collision: any): any {
+        // Contact point is along the normal from the circle center
+        const circleCenter = objB.localToWorld(shapeB.offset);
+        const point = circleCenter.clone().add(collision.normal.clone().mult(-shapeB.radius));
+        
         const featureId = ((objA.id & 0xFF) << 24) | ((objB.id & 0xFF) << 16) | ((shapeA.id & 0xFF) << 8) | (shapeB.id & 0xFF);
         return { points: [point], featureIds: [featureId] };
     }

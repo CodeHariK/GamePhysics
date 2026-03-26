@@ -77,7 +77,7 @@ export const CanvasView: Component<CanvasViewProps> = (props) => {
                 "font-size": "11px",
                 color: "#ccc",
                 "pointer-events": "none",
-                "font-family": " Rajdhani, sans-serif"
+                "font-family": "'JetBrains Mono', monospace"
             }}>
                 ZOOM: {zoom().toFixed(1)}x (MWHEEL) | PAN: MCLICK DRAG
             </div>

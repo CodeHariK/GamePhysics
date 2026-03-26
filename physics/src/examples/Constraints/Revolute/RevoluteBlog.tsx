@@ -20,7 +20,7 @@ export default function RevoluteBlog() {
     const softConstraints = finalParts[1] || '';
 
     return (
-        <div class="blog-container" style="max-width: 900px; margin: 0 auto; padding: 20px; font-family: 'Inter', sans-serif; line-height: 1.6; color: #eee; display: flex; flex-direction: column; gap: 40px;">
+        <div class="blog-container" style="max-width: 900px; margin: 0 auto; padding: 20px; font-family: 'Inter', monospace; line-height: 1.6; color: #eee; display: flex; flex-direction: column; gap: 40px;">
             <div class="blog-card" style="background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);">
                 <Markdown content={intro} />
                 

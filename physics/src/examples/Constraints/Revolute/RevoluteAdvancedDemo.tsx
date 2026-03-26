@@ -178,7 +178,7 @@ export default function RevoluteAdvancedDemo() {
     });
 
     return (
-        <div style="background: #fdfdfd; border-radius: 12px; overflow: hidden; border: 1px solid #e0e0e0; font-family: 'Inter', sans-serif;">
+        <div style="background: #fdfdfd; border-radius: 12px; overflow: hidden; border: 1px solid #e0e0e0; font-family: 'Inter', monospace;">
             <div style="padding: 15px; background: #fff; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
                 <h3 style="margin: 0; font-size: 14px; font-weight: 800; color: #2c3e50; text-transform: uppercase;">
                     Advanced Revolute Lab

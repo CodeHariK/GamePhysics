@@ -3,7 +3,8 @@ import { AABB } from "./AABB";
 
 export const ShapeType = {
     CIRCLE: 0,
-    POLYGON: 1
+    POLYGON: 1,
+    CAPSULE: 2
 } as const;
 
 export type ShapeType = typeof ShapeType[keyof typeof ShapeType];
@@ -183,5 +184,76 @@ export class PolygonShape extends Shape {
             if (intersect) inside = !inside;
         }
         return inside;
+    }
+}
+
+/**
+ * A capsule shape defined by two local points and a radius.
+ */
+export class CapsuleShape extends Shape {
+    public readonly type = ShapeType.CAPSULE;
+    public p1: Vector2;
+    public p2: Vector2;
+    public radius: number;
+
+    constructor(p1: Vector2, p2: Vector2, radius: number) {
+        super();
+        this.p1 = p1;
+        this.p2 = p2;
+        this.radius = radius;
+    }
+
+    public project(pos: Vector2, rot: number, axis: Vector2): { min: number; max: number } {
+        const wp1 = this.getPointWorld(this.p1, pos, rot);
+        const wp2 = this.getPointWorld(this.p2, pos, rot);
+        const proj1 = wp1.dot(axis);
+        const proj2 = wp2.dot(axis);
+        return {
+            min: Math.min(proj1, proj2) - this.radius,
+            max: Math.max(proj1, proj2) + this.radius
+        };
+    }
+
+    public getAABB(pos: Vector2, rot: number): AABB {
+        const wp1 = this.getPointWorld(this.p1, pos, rot);
+        const wp2 = this.getPointWorld(this.p2, pos, rot);
+        return new AABB(
+            Math.min(wp1.x, wp2.x) - this.radius,
+            Math.min(wp1.y, wp2.y) - this.radius,
+            Math.max(wp1.x, wp2.x) + this.radius,
+            Math.max(wp1.y, wp2.y) + this.radius
+        );
+    }
+
+    public containsLocalPoint(p: Vector2): boolean {
+        const closest = this.closestPointOnSegmentLocal(p);
+        return Vector2.sub(p, closest, new Vector2()).lengthSq() <= this.radius * this.radius;
+    }
+
+    public containsPoint(pos: Vector2, rot: number, p: Vector2): boolean {
+        const wp1 = this.getPointWorld(this.p1, pos, rot);
+        const wp2 = this.getPointWorld(this.p2, pos, rot);
+        const closest = this.closestPointOnSegment(p, wp1, wp2);
+        return Vector2.sub(p, closest, new Vector2()).lengthSq() <= this.radius * this.radius;
+    }
+
+    private getPointWorld(p: Vector2, pos: Vector2, rot: number): Vector2 {
+        const cos = Math.cos(rot);
+        const sin = Math.sin(rot);
+        const rx = p.x * cos - p.y * sin;
+        const ry = p.x * sin + p.y * cos;
+        return new Vector2(pos.x + rx, pos.y + ry);
+    }
+
+    private closestPointOnSegment(p: Vector2, a: Vector2, b: Vector2): Vector2 {
+        const ab = Vector2.sub(b, a, new Vector2());
+        let t = ab.dot(ab);
+        if (t === 0) return a.clone();
+        t = Math.max(0, Math.min(1, Vector2.sub(p, a, new Vector2()).dot(ab) / t));
+        return a.clone().add(ab.mult(t));
+    }
+
+    private closestPointOnSegmentLocal(p: Vector2): Vector2 {
+        return this.closestPointOnSegment(p, this.p1, this.p2);
     }
 }

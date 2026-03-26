@@ -23,7 +23,7 @@ export default function InequalityBlog() {
     return (
         <div class="blog-card" style="display: flex; flex-direction: column; gap: 30px;">
             <div style="border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">
-                <h2 style="margin: 0; color: #2c3e50; font-family: 'Orbitron', sans-serif;">08. Inequality Constraints</h2>
+                <h2 style="margin: 0; color: #2c3e50; font-family: 'JetBrains Mono', monospace;">08. Inequality Constraints</h2>
                 <p style="color: #64748b; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Compound Bodies & Narrow Phase</p>
             </div>
 

@@ -105,9 +105,9 @@ export default function BrachistochroneDemo() {
         ctx.moveTo(x + 40, y + 20); ctx.lineTo(x + 40, y + h - 30); ctx.lineTo(x + w - 20, y + h - 30);
         ctx.stroke();
 
-        ctx.fillStyle = '#fff'; ctx.font = 'bold 12px Rajdhani';
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 12px "JetBrains Mono", monospace';
         ctx.fillText(title, x + w / 2 - 40, y + 15);
-        ctx.fillStyle = '#888'; ctx.font = '10px Rajdhani';
+        ctx.fillStyle = '#888'; ctx.font = '10px "JetBrains Mono", monospace';
         ctx.fillText(xAxis, x + w - 40, y + h - 15);
         ctx.save();
         ctx.translate(x + 15, y + h / 2 + 20);
@@ -144,7 +144,7 @@ export default function BrachistochroneDemo() {
         ctx.moveTo(x + 40, y + 20); ctx.lineTo(x + 40, y + h - 30); ctx.lineTo(x + w - 20, y + h - 30);
         ctx.stroke();
 
-        ctx.fillStyle = bead.color; ctx.font = 'bold 12px Rajdhani';
+        ctx.fillStyle = bead.color; ctx.font = 'bold 12px "JetBrains Mono", monospace';
         ctx.fillText(title, x + 45, y + 15);
 
         const timeScale = (w - 70) / 1.5;
@@ -162,7 +162,7 @@ export default function BrachistochroneDemo() {
                 }
             });
             ctx.stroke();
-            ctx.fillStyle = color; ctx.font = '9px Rajdhani';
+            ctx.fillStyle = color; ctx.font = '9px "JetBrains Mono", monospace';
             ctx.fillText(name, x + w - 60, y + 20 + offset);
         };
 
@@ -233,7 +233,7 @@ export default function BrachistochroneDemo() {
         <div class="demo-container" style="background: #0a0a0a; padding: 25px; border-radius: 12px; border: 1px solid #333;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <div>
-                    <h3 style="margin: 0; color: #fff; font-family: Rajdhani;">Brachistochrone Performance Analytics</h3>
+                    <h3 style="margin: 0; color: #fff; font-family: 'JetBrains Mono', monospace;">Brachistochrone Performance Analytics</h3>
                     <p style="margin: 5px 0 0; font-size: 13px; color: #888;">Proving the Least Action principle through energy conservation.</p>
                 </div>
                 <button
@@ -241,7 +241,7 @@ export default function BrachistochroneDemo() {
                         beads.forEach(b => { b.pos = 0; b.v = 0; b.t = 0; b.completed = false; b.history = []; });
                         setIsRunning(true);
                     }}
-                    style="background: #ef4444; color: white; border: none; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: Rajdhani; transition: all 0.2s;"
+                    style="background: #ef4444; color: white; border: none; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: 'JetBrains Mono', monospace; transition: all 0.2s;"
                     onMouseEnter={(e) => e.currentTarget.style.filter = 'brightness(1.2)'}
                     onMouseLeave={(e) => e.currentTarget.style.filter = 'none'}
                 >
@@ -260,7 +260,7 @@ export default function BrachistochroneDemo() {
             <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(1, 1fr); gap: 10px; background: #111; padding: 15px; border-radius: 8px;">
                 <For each={beads}>{(bead) => (
                     <div style={`display: flex; justify-content: space-between; align-items: center; border-left: 4px solid ${bead.color}; padding-left: 10px;`}>
-                        <span style={`color: ${bead.color}; font-weight: bold; font-family: Rajdhani;`}>{bead.name}</span>
+                        <span style={`color: ${bead.color}; font-weight: bold; font-family: 'JetBrains Mono', monospace;`}>{bead.name}</span>
                         <span style="color: #ccc; font-family: monospace;">
                             {bead.completed ? `TIME: ${bead.t.toFixed(4)}s` : `POS: ${bead.pos.toFixed(1)} / ${L}`}
                         </span>

@@ -11,6 +11,26 @@
 
 # Maths
 
+### Linear Algebra
+
+* [Linear Algebra (Full Course)](https://www.youtube.com/playlist?list=PLl-gb0E4MII1RjTV2GegmXFTJwTrek8OI)
+
+* [Essence of linear algebra](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab)
+* [Applied Linear Algebra (with data analysis examples)](https://www.youtube.com/playlist?list=PLEbdLhb9LymSAZC2bz72V3W1lfwpGSgln)
+* [Why is the determinant like that?](https://www.youtube.com/watch?v=Sv7VseMsOQc)
+
+* [SEE Matrix](https://www.youtube.com/playlist?list=PLWhu9osGd2dB9uMG5gKBARmk73oHUUQZS)
+
+* [The Art of Linear Programming](https://www.youtube.com/watch?v=E72DWgKP_1Y)
+
+### Partial Differential Equation
+
+* [Differential Equations (and some numerics)](https://www.youtube.com/playlist?list=PLEbdLhb9LymQ1fTeCi7NhWs14cnoAXNvs)
+
+### Lagrange
+
+* [Understanding Lagrange Multipliers Visually](https://www.youtube.com/watch?v=5A39Ht9Wcu0)
+
 ### Jacobian
 * [Change of Variables and the Jacobian](https://www.youtube.com/watch?v=hhFzJvaY__U)
 * [The Jacobian Matrix](https://www.youtube.com/watch?v=QexBVGVM690)
@@ -19,6 +39,9 @@
 # Physics
 
 * [Veritasium | Lagrange | The Closest We’ve Come to a Theory of Everything](https://www.youtube.com/watch?v=Q10_srZ-pbs)
+
+* [Classical mechanics](https://www.youtube.com/playlist?list=PLEbdLhb9LymQzpeuoFrNrG4Mycv6iWspc)
+* [Classical Mechanics 2](https://www.youtube.com/playlist?list=PLEbdLhb9LymT-ERkLGrhRw-L1p2bWUoLa)
 
 * [Lagrangian vs Newtonian Mechanics](https://www.youtube.com/watch?v=_Hp11d1Z-78)
 * [Classical Physics for Quantum Mechanics](https://www.youtube.com/playlist?list=PL_UV-wQj1lvX-6uNvdvOHOopu4WZ_dE5w)
@@ -35,7 +58,17 @@
 * [Verlet Integration](https://www.youtube.com/watch?v=-GWTDhOQU6M)
 
 
-## 2D Physics Engine
+## Physics Engine
+
+* [Physics-Based Animation](https://www.youtube.com/playlist?list=PLTkE7n2CwG_PH09_q0Q7ttjqE2F9yGeM3)
+
+* [Intro to Graphics 24 - Physics Based Animation](https://www.youtube.com/watch?v=F9TP48yXs3s)
+* [Intro to Graphics 25 - Simulation in Graphics](https://www.youtube.com/watch?v=iZ1e_1tnLgI)
+
+* [SIGGRAPH - An Introduction to Physics-Based Animation](https://www.youtube.com/watch?v=b_WJ-HwalwU)
+* [Siggraph | An Introduction to Physics-based Animation Pt.1](https://www.youtube.com/watch?v=zjmiV1D_Kw8)
+* [Siggraph | An Introduction to Physics-based Animation Pt.2](https://www.youtube.com/watch?v=IIxXUpGSizY)
+
 
 * https://majikayogames.github.io/physics-tutorial/
 * [2D Physics Engine Tutorial Series](https://www.youtube.com/playlist?list=PLbuK0gG93AsENAa67XysaOr5K0cczxye_)
@@ -91,6 +124,15 @@
 ## Particle Simulation
 
 * [Teaching myself C so I can build a particle simulation](https://www.youtube.com/watch?v=NorXFOobehY)
+
+## Data Structure
+
+* [Recreating DOOM](https://www.youtube.com/playlist?list=PLi77irUVkDasNAYQPr3N8nVcJLQAlANva)
+* [BSP Trees: The Magic Behind Collision Detection in Quake](https://www.youtube.com/watch?v=wLHXn8IlAiA)
+
+* [24 - Bounding Volume Hierarchies with a blazing fast implementation using Morton codes](https://www.youtube.com/watch?v=LAxHQZ8RjQ4)
+
+* [Math for Game Developers: Dynamic Bounding Volume Hierarchies](https://gdcvault.com/play/1025909/Math-for-Game-Developers-Dynamic)
 
 ## Computational Geometry
 

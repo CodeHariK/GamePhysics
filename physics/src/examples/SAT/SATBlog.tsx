@@ -7,12 +7,12 @@ import ClippingLab from './ClippingLab';
 
 export default function SATBlog() {
     return (
-        <div style="font-family: 'Rajdhani', sans-serif; background: #0a0a0a; color: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 60px; max-width: 1000px; margin: 0 auto; line-height: 1.6;">
+        <div style="font-family: 'JetBrains Mono', monospace; background: #0a0a0a; color: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 60px; max-width: 1000px; margin: 0 auto; line-height: 1.6;">
             
             {/* --- SECTION 1: SAT --- */}
             <section style="display: flex; flex-direction: column; gap: 30px;">
                 <div style="border-bottom: 1px solid rgba(52, 152, 219, 0.2); padding-bottom: 15px;">
-                    <h1 style="margin: 0; font-family: 'Orbitron', sans-serif; letter-spacing: 4px; background: linear-gradient(90deg, #3498db, #2ecc71); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px;">01. SEPARATING AXIS THEOREM</h1>
+                    <h1 style="margin: 0; font-family: 'JetBrains Mono', monospace; letter-spacing: 4px; background: linear-gradient(90deg, #3498db, #2ecc71); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px;">01. SEPARATING AXIS THEOREM</h1>
                     <p style="color: #555; margin-top: 5px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">Narrow-Phase Collision Detection</p>
                 </div>
 
@@ -30,7 +30,7 @@ export default function SATBlog() {
             {/* --- SECTION 2: CLIPPING --- */}
             <section style="display: flex; flex-direction: column; gap: 30px;">
                 <div style="border-bottom: 1px solid rgba(0, 251, 255, 0.2); padding-bottom: 15px;">
-                    <h1 style="margin: 0; font-family: 'Orbitron', sans-serif; letter-spacing: 4px; background: linear-gradient(90deg, #00fbff, #0099ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px;">02. SUTHERLAND-HODGMAN CLIPPING</h1>
+                    <h1 style="margin: 0; font-family: 'JetBrains Mono', monospace; letter-spacing: 4px; background: linear-gradient(90deg, #00fbff, #0099ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px;">02. SUTHERLAND-HODGMAN CLIPPING</h1>
                     <p style="color: #555; margin-top: 5px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">Contact Manifold Generation</p>
                 </div>
 
@@ -48,7 +48,7 @@ export default function SATBlog() {
             {/* --- SECTION 3: COMPARISON --- */}
             <section style="display: flex; flex-direction: column; gap: 30px;">
                 <div style="border-bottom: 1px solid rgba(230, 126, 34, 0.2); padding-bottom: 15px;">
-                    <h1 style="margin: 0; font-family: 'Orbitron', sans-serif; letter-spacing: 4px; background: linear-gradient(90deg, #e67e22, #f1c40f); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px;">03. COMPARISON & RECOMMENDATIONS</h1>
+                    <h1 style="margin: 0; font-family: 'JetBrains Mono', monospace; letter-spacing: 4px; background: linear-gradient(90deg, #e67e22, #f1c40f); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px;">03. COMPARISON & RECOMMENDATIONS</h1>
                     <p style="color: #555; margin-top: 5px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">Stability & Robustness Analysis</p>
                 </div>
 

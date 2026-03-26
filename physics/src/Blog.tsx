@@ -14,6 +14,8 @@ import LagrangeMultiplier from './examples/Maths/LagrangianMultiplier/LagrangeMu
 import SkateboardDerivation from './examples/Constraints/Skateboard/SkateboardDerivation';
 import RevoluteBlog from './examples/Constraints/Revolute/RevoluteBlog';
 import InequalityBlog from './examples/Constraints/Inequality/InequalityBlog';
+import JacobianBlog from './examples/Maths/Jacobian/JacobianBlog';
+import PinballDemo from './examples/Pinball/PinballDemo';
 
 
 const TABS = [
@@ -25,12 +27,14 @@ const TABS = [
     { id: 'lagrange', label: 'Lagrange Multipliers' },
     { id: 'stress', label: 'Stress Test' },
     { id: 'friction', label: 'Friction & Rotation' },
+    { id: 'jacobian', label: 'The Jacobian' },
     { id: 'constraints', label: 'Constraints' },
     { id: 'inequality', label: 'Inequality' },
+    { id: 'pinball', label: 'Pinball' },
 ];
 
 export default function Blog() {
-    const [activeTab, setActiveTab] = createSignal('inequality');
+    const [activeTab, setActiveTab] = createSignal('jacobian');
 
     return (
         <div class="blog-container">
@@ -131,6 +135,22 @@ export default function Blog() {
 
                         <Match when={activeTab() === 'inequality'}>
                             <InequalityBlog />
+                        </Match>
+
+                        <Match when={activeTab() === 'jacobian'}>
+                            <JacobianBlog />
+                        </Match>
+
+                        <Match when={activeTab() === 'pinball'}>
+                            <div class="blog-card">
+                                <h2>12. Pinball Mechanics (Capsule Shape)</h2>
+                                <p>
+                                    The pinball flipper is a classic example of a <strong>Capsule Shape</strong>. Colliding a circle (the ball) with a capsule involves finding the closest point on the capsule's line segment to the circle's center.
+                                </p>
+                                <div class="demo-container">
+                                    <PinballDemo />
+                                </div>
+                            </div>
                         </Match>
 
                     </Switch>

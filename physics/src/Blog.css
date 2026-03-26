@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
     --bg-color: #050505;
@@ -16,7 +16,7 @@ body {
     padding: 0;
     background: var(--bg-color);
     color: var(--text-primary);
-    font-family: 'Rajdhani', sans-serif;
+    font-family: 'JetBrains Mono', monospace;
     overflow-x: hidden;
 }
 
@@ -28,13 +28,13 @@ body {
 
 .title-header {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .title-header h1 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 3rem;
-    letter-spacing: 0.5rem;
+    letter-spacing: 0.1rem;
     margin: 0;
     background: linear-gradient(90deg, #3498db, #2ecc71);
     -webkit-background-clip: text;
@@ -43,10 +43,10 @@ body {
 }
 
 .subtitle {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: 'JetBrains Mono', monospace;
     color: var(--text-secondary);
-    font-size: 1.2rem;
-    letter-spacing: 2px;
+    font-size: 1rem;
+    letter-spacing: 1px;
     text-transform: uppercase;
     margin-top: 10px;
 }
@@ -81,8 +81,8 @@ body {
     background: transparent;
     border: none;
     color: var(--text-secondary);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
     font-weight: 700;
     cursor: pointer;
     border-radius: 8px;
@@ -105,7 +105,8 @@ body {
 
 .content-section {
     flex-grow: 1;
-    min-width: 0; /* Prevents flex items from overflowing */
+    min-width: 0;
+    /* Prevents flex items from overflowing */
     animation: slideIn 0.5s ease-out;
 }
 
@@ -131,10 +132,10 @@ body {
 }
 
 h2 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'JetBrains Mono', monospace;
     color: var(--accent-blue);
     margin-top: 0;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
 }
 
 p {
@@ -203,11 +204,11 @@ p {
 }
 
 .theory-card h4 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'JetBrains Mono', monospace;
     color: var(--text-primary);
     margin-top: 0;
     margin-bottom: 15px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     text-transform: uppercase;
 }
 
@@ -221,10 +222,10 @@ p {
 }
 
 .integrator-intro h3 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'JetBrains Mono', monospace;
     color: #eee;
     margin-top: 40px;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
 }
 
 b {

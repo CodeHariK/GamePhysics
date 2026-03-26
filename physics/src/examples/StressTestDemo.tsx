@@ -140,9 +140,9 @@ export default function StressTestDemo() {
     };
 
     return (
-        <div style="font-family: 'Rajdhani', sans-serif; background: #0a0a0a; color: white; padding: 20px; border-radius: 12px; max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px;">
+        <div style="font-family: 'JetBrains Mono', monospace; background: #0a0a0a; color: white; padding: 20px; border-radius: 12px; max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="margin: 0; font-family: 'Orbitron', sans-serif; letter-spacing: 2px; color: #3498db;">STABILIZED PHYSICS</h2>
+                <h2 style="margin: 0; font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; color: #3498db;">STABILIZED PHYSICS</h2>
                 <div style="font-size: 14px; color: #888;">FPS: <span style="color: #2ecc71; font-weight: bold;">{fps()}</span> | Physics: <span style="color: #3498db;">120Hz</span></div>
             </div>
 

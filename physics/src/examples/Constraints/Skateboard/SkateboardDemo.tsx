@@ -243,7 +243,7 @@ export default function SkateboardDemo() {
     };
 
     return (
-        <div style="font-family: sans-serif; background: #fff; color: #111; padding: 20px; border-radius: 8px;">
+        <div style="font-family: monospace; background: #fff; color: #111; padding: 20px; border-radius: 8px;">
             <div style="margin-bottom: 20px; display: flex; gap: 20px; align-items: center;">
                 <label style="display: flex; align-items: center; cursor: pointer; font-weight: 600;">
                     <input type="checkbox" checked={followMouse()} onChange={(e) => setFollowMouse(e.currentTarget.checked)} style="margin-right: 10px;" />

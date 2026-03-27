@@ -25,6 +25,8 @@
 
 ### Partial Differential Equation
 
+* [Differential equations and calculus from scratch](https://www.youtube.com/watch?v=asiFbvRKgRk)
+
 * [Differential Equations (and some numerics)](https://www.youtube.com/playlist?list=PLEbdLhb9LymQ1fTeCi7NhWs14cnoAXNvs)
 
 ### Lagrange
@@ -48,6 +50,8 @@
 
 # Numerical Integration
 
+* [The Code That Revolutionized Orbital Simulation](https://www.youtube.com/watch?v=nCg3aXn5F3M)
+
 * [Erin Catto GDC | Physics for Game Programmers : Numerical Methods](https://gdcvault.com/play/1022196/Physics-for-Game-Programmers-Numerical)
 
 * [3Blue1Brown | Taylor series | Chapter 11, Essence of calculus](https://www.youtube.com/watch?v=3d6DsjIBzJ4&list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr&index=11)
@@ -59,6 +63,8 @@
 
 
 ## Physics Engine
+
+* [TenMinutePhysics](https://www.youtube.com/@TenMinutePhysics/videos)
 
 * [Physics-Based Animation](https://www.youtube.com/playlist?list=PLTkE7n2CwG_PH09_q0Q7ttjqE2F9yGeM3)
 
@@ -76,6 +82,10 @@
 * [Let's Make a Physics Engine](https://www.youtube.com/playlist?list=PLSlpr6o9vURwq3oxVZSimY8iC-cdd3kIs)
 * [GamesWithGabe | Coding a 2D Physics Engine](https://www.youtube.com/playlist?list=PLtrSb4XxIVbpZpV65kk73OoUcIrBzoSiO)
 
+
+#### Constraints
+
+* [Ten Minute Physics | Joint Simulation made simple](https://www.youtube.com/watch?v=YVaQxeWGlJA)
 
 * [Erin Catto | Physics for Game Programmers: Understanding Constraints](https://www.youtube.com/watch?v=SHinxAhv1ZE&list=PLVmb_qp6XRcwzN9l5mcia6Gh3HOgut3bH&index=18)
 * [Erin Catto | Physics for Game Programmers; Continuous Collision](https://www.youtube.com/watch?v=7_nKOET6zwI&list=PLVmb_qp6XRcwzN9l5mcia6Gh3HOgut3bH&index=9)
@@ -122,6 +132,11 @@
 * [Argonaut | Simulating soft body animals](https://www.youtube.com/watch?v=GXh0Vxg7AnQ)
 
 ## Particle Simulation
+
+* [Building the simplest fluid simulation that still makes sense](https://www.youtube.com/watch?v=sSJmUmCHAJY)
+
+* [Coding Adventure: Simulating Smoke](https://www.youtube.com/watch?v=Q78wvrQ9xsU)
+* [Coding Adventure: Simulating Fluids](https://www.youtube.com/watch?v=rSKMYc1CQHE)
 
 * [Teaching myself C so I can build a particle simulation](https://www.youtube.com/watch?v=NorXFOobehY)
 
